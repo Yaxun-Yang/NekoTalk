@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.nekotalk.persistence.AccountMapper">
+
+    <insert id="insertUser" >
+        INSERT INTO USERS
+        VALUES(#{phoneNumber},  #{username},#{password}, #{avatar}, #{sex}, #{sign}, #{lastAddress});
+    </insert>
+
+
+
+    <update id="updateUser" >
+        UPDATE USERS
+        SET
+            username = #{username},
+            PASSWORD = #{password},
+            avatar = #{avatar},
+            sex = #{sex},
+            sign = #{sign},
+            lastAddress = #{lastAddress}
+        WHERE phoneNumber = #{phoneNumber};
+    </update>
+
+
+    <select id="getUserByPhoneNumber"  resultType="Users">
+       SELECT *
+       FROM USERS
+       WHERE phoneNumber = #{phoneNumber};
+    </select>
+
+    <select id="getUserByPhoneNumberAndPassword"  resultType="Users">
+       SELECT *
+       FROM USERS
+       WHERE phoneNumber = #{phoneNumber}
+       AND PASSWORD = #{password};
+    </select>
+
+    <select id="getUserPassword" resultType="String">
+        SELECT PASSWORD
+        FROM USERS
+        WHERE phoneNumber = #{phoneNumber};
+    </select>
+
+
+    <delete id="deleteUser">
+        DELETE
+        FROM USERS
+        WHERE phoneNumber = #{phoneNumber};
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.csu.nekotalk.persistence.AccountMapper">
+
+    <insert id="insertSession" >
+        INSERT INTO SESSION
+        VALUES(null,#{more},  current_timestamp );
+    </insert>
+
+    <insert id="insertSessionJoin" >
+        INSERT INTO SESSIONJOIN
+        VALUES(#{sessionId},#{phoneNumber} );
+    </insert>
+
+    <insert id="insertSessionMessage" >
+        INSERT INTO SESSIONMESSAGE
+        VALUES(#{sessionId},#{phoneNumber},  #{text}, current_timestamp);
+    </insert>
+
+    <insert id="insertSessionPicture" >
+        INSERT INTO SESSIONPICTURE
+        VALUES(#{sessionId}, #{phoneNumber},#{url}, current_timestamp );
+    </insert>
+
+
+
+
+    <select id="getSession"  resultType="Session">
+       SELECT sessionId,more,createTimestamp
+       FROM SESSION
+       WHERE sessionId = #{sessionId};
+    </select>
+
+    <select id="getUserSession"  resultType="Integer">
+       SELECT sessionId
+       FROM SESSIONJOIN
+       WHERE phoneNumber = #{phoneNumber};
+    </select>
+
+    <select id="getSessionMessage"  resultType="SessionMessage">
+       SELECT sessionId,phoneNumber,text,time
+       FROM SESSIONMESSAGE
+       WHERE sessionId = #{sessionId};
+    </select>
+
+    <select id="getSessionPicture"  resultType="SessionPicture">
+       SELECT sessionId,phoneNumber,url,time
+       FROM SESSIONPICTURE
+       WHERE sessionId = #{sessionId};
+    </select>
+
+    <select id="getSessionJoin"  resultType="String">
+       SELECT phoneNumber
+       FROM SESSIONJOIN
+       WHERE sessionId = #{sessionId};
+    </select>
+
+</mapper>
