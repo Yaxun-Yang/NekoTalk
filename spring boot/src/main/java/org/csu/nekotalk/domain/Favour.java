@@ -14,5 +14,6 @@ import javax.validation.constraints.Size;
 public class Favour {
 
     private String momentId;
+
     private String phoneNumber;
 }

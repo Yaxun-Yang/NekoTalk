@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.csu.nekotalk.persistence.AccountMapper">
+<mapper namespace="org.csu.nekotalk.persistence.MomentMapper">
 
     <insert id="insertMoment" >
         INSERT INTO MOMENT
-        VALUES(null,#{phoneNumber},  #{text},#{originality},  #{powerType});
+        VALUES(null,#{phoneNumber},  #{text},#{originality},  #{powerType}, #{momentTimeStamp});
     </insert>
 
     <insert id="insertMomentPicture" >
@@ -28,8 +28,8 @@
         VALUES(#{momentId},#{phoneNumber});
     </insert>
 
-    <insert id="insertComments" >
-        INSERT INTO COMMENTS
+    <insert id="insertComment" >
+        INSERT INTO COMMENT
         VALUES(null,#{phoneNumber}, #{momentId},#{replyCommentId},  #{text});
     </insert>
 
@@ -86,13 +86,13 @@
 
     <delete id="deleteAllComments">
         DELETE
-        FROM COMMENTS
+        FROM COMMENT
         WHERE momentId = #{momentId};
     </delete>
 
     <delete id="deleteComment">
         DELETE
-        FROM COMMENTS
+        FROM COMMENT
         WHERE commentId = #{commentId};
     </delete>
 
@@ -100,13 +100,6 @@
         DELETE
         FROM COMMENTS
         WHERE replyCommentId = #{replyCommentId};
-    </delete>
-
-    <delete id="deleteSomeReplyComment">
-        DELETE
-        FROM COMMENTS
-        WHERE commentId = #{commentId}
-        AND replyCommentId = #{replyCommentId};
     </delete>
 
     <delete id="deleteAllFavour">
@@ -119,7 +112,7 @@
         DELETE
         FROM FAVOUR
         WHERE momentId = #{momentId}
-        AND phoneNumber=#{phoneNumber};
+        AND phoneNumber = #{phoneNumber};
     </delete>
 
     <delete id="deleteAllFork">
@@ -128,7 +121,7 @@
         WHERE forkForm = #{forkForm};
     </delete>
 
-    <delete id="deleteFavour">
+    <delete id="deleteFork">
         DELETE
         FROM FORKMOMENT
         WHERE momentId = #{momentId};
@@ -149,39 +142,58 @@
     </update>
 
 
+    <update id="updateComment">
+        UPDATE COMMENT
+        SET
+            text = #{text}
+        WHERE momentId = #{momentId}
 
+    </update>
 
+    <select id="getRecentMomentId" resultType="String">
+        SELECT momentId
+        FROM MOMENT
+        WHERE phoneNumber = #{phoneNumber}
+        ORDER BY momentId
+        DESC LIMIT 1
+    </select>
     <select id="getMomentByPhoneNumber"  resultType="Moment">
-       SELECT momentId,phoneNumber,text,originality,powerTpye
+       SELECT momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
        FROM MOMENT
        WHERE phoneNumber = #{phoneNumber};
     </select>
 
-    <select id="getLabelIdByDescription"  resultType="int">
+    <select id="getLabelIdByDescription"  resultType="String">
        SELECT labelId
        FROM LABEL
        WHERE description = #{description};
     </select>
 
-    <select id="getMomentByLabel"  resultType="Integer">
+    <select id="getMomentByLabel"  resultType="String">
        SELECT momentId
        FROM LabelInclude
        WHERE LabelId = #{LabelId};
+       ORDER BY momentTimeStamp DESC
     </select>
 
     <select id="getMomentByMomentId"  resultType="Moment">
-       SELECT momentId,phoneNumber,text,originality,powerTpye
+       SELECT momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
        FROM MOMENT
        WHERE momentId = #{momentId};
     </select>
 
-    <select id="getMomentIdByPhoneNumber"  resultType="Integer">
+    <select id="getMomentIdByPhoneNumber"  resultType="String">
        SELECT momentId
        FROM FAVOUR
-       WHERE phoneNumber = #{phoneNumber};
+       WHERE phoneNumber = #{phoneNumber}
+       ORDER BY momentTimeStamp DESC
     </select>
 
-
+    <select id="getMomentList" resultType="Moment">
+        SELECT  momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
+        FROM MOMENT
+        ORDER BY momentTimeStamp DESC
+    </select>
 
 
 </mapper>

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comments {
+public class Comment {
 
     private String commentId;
     private String phoneNumber;
