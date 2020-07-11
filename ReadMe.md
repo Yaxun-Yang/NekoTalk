@@ -17,7 +17,7 @@ git clone git@github.com:Yaxun-Yang/NekoTalk.git
 2. 将本地仓库与远程仓库关联()
 ```
 cd NekoTalk
-git remote add origin git@github.com:Yaxun-Yang/MultiScanner.git
+git remote add origin git@github.com:Yaxun-Yang/NekoTalk.git
 ```
 ps: 如果出现`fatal : romote origin already exists.`的提示，说明在上一步clone的时候已经自动添加了远程仓库，可直接进入下一步
 
