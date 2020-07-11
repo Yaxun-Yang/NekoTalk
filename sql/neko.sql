@@ -1,147 +1,246 @@
-CREATE DATABASE neko;
+/*
+ Navicat Premium Data Transfer
 
-use neko;
-CREATE TABLE users(
-	phoneNumber	Varchar(50)	Not	NULL ,	
-    username Varchar(50)	not	NULL,	
-    password Varchar(50)	not	NULL,	
-    avatar Varchar(50)	,
-    sex	Varchar(50)	,
-    sign Varchar(50) ,
-    lastAddress	Varchar(50)	,	
-	PRIMARY KEY(phoneNumber)
-);
+ Source Server         : mySQL
+ Source Server Type    : MySQL
+ Source Server Version : 80017
+ Source Host           : localhost:3306
+ Source Schema         : neko
 
-insert users values("15273299601","han","111",null,null,null,null);
-insert users values("222","chen","222",null,null,null,null);
+ Target Server Type    : MySQL
+ Target Server Version : 80017
+ File Encoding         : 65001
 
-create table following(
-     userPhoneNumber	Varchar(50)	not null,	
-     followingPhoneNumber	Varchar(50)	not null,	
-     PRIMARY KEY(userPhoneNumber,followingPhoneNumber),
-	 Foreign key (userPhoneNumber) references users(phoneNumber),
-     Foreign key (followingPhoneNumber) references users(phoneNumber)
-);
-insert following values("15273299601","222");
+ Date: 11/07/2020 15:24:26
+*/
 
-create table moment(
-momentId	int	not null AUTO_INCREMENT,
-phoneNumber	Varchar(50)	not null,	
-text	Varchar(400),	
-originality	Varchar(50)	not null,
-powerTpye	Int 	not null,
-PRIMARY KEY(momentId),
-Foreign key (phoneNumber) references users(phoneNumber)
-);
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-create table favour(
-     momentId	int	not null,
-     phoneNumber	Varchar(50)	not null,
-	 PRIMARY KEY(momentId,phoneNumber),
-	 Foreign key (momentId) references moment(momentId),
-     Foreign key (phoneNumber) references users(phoneNumber)
-);
+-- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`  (
+  `commentId` int(11) NOT NULL AUTO_INCREMENT,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `momentId` int(11) NOT NULL,
+  `replyCommentId` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `text` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `commentTimeStamp` timestamp(6) NOT NULL,
+  PRIMARY KEY (`commentId`) USING BTREE,
+  INDEX `momentId`(`momentId`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table powerUsers(
-momentId	int	not null,
-phoneNumber	Varchar(50)	not null,
-PRIMARY KEY(momentId,phoneNumber),
-	  Foreign key (momentId) references moment(momentId),
-     Foreign key (phoneNumber) references users(phoneNumber)
-);
+-- ----------------------------
+-- Table structure for favour
+-- ----------------------------
+DROP TABLE IF EXISTS `favour`;
+CREATE TABLE `favour`  (
+  `momentId` int(11) NOT NULL,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`momentId`, `phoneNumber`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `favour_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `favour_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for following
+-- ----------------------------
+DROP TABLE IF EXISTS `following`;
+CREATE TABLE `following`  (
+  `userPhoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `followingPhoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`userPhoneNumber`, `followingPhoneNumber`) USING BTREE,
+  INDEX `followingPhoneNumber`(`followingPhoneNumber`) USING BTREE,
+  CONSTRAINT `following_ibfk_1` FOREIGN KEY (`userPhoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `following_ibfk_2` FOREIGN KEY (`followingPhoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table originalityMoment(
-momentId	int	not null,
-address	Varchar(50) ,
-PRIMARY KEY(momentId),
-Foreign key (momentId) references moment(momentId)
-);
+-- ----------------------------
+-- Records of following
+-- ----------------------------
+INSERT INTO `following` VALUES ('15273299601', '222');
 
+-- ----------------------------
+-- Table structure for forkmoment
+-- ----------------------------
+DROP TABLE IF EXISTS `forkmoment`;
+CREATE TABLE `forkmoment`  (
+  `momentId` int(11) NOT NULL,
+  `forkForm` int(11) NOT NULL,
+  PRIMARY KEY (`momentId`) USING BTREE,
+  INDEX `forkForm`(`forkForm`) USING BTREE,
+  CONSTRAINT `forkmoment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `forkmoment_ibfk_2` FOREIGN KEY (`forkForm`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table forkMoment(
-momentId	int	not null,
-forkForm int  not null,
-PRIMARY KEY(momentId),
-Foreign key (momentId) references moment(momentId),
-Foreign key (forkForm) references originalityMoment(momentId)
-);
+-- ----------------------------
+-- Table structure for label
+-- ----------------------------
+DROP TABLE IF EXISTS `label`;
+CREATE TABLE `label`  (
+  `labelId` int(11) NOT NULL AUTO_INCREMENT,
+  `description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`labelId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for labelinclude
+-- ----------------------------
+DROP TABLE IF EXISTS `labelinclude`;
+CREATE TABLE `labelinclude`  (
+  `momentId` int(11) NOT NULL,
+  `labelId` int(11) NOT NULL,
+  PRIMARY KEY (`momentId`, `labelId`) USING BTREE,
+  INDEX `labelId`(`labelId`) USING BTREE,
+  CONSTRAINT `labelinclude_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `labelinclude_ibfk_2` FOREIGN KEY (`labelId`) REFERENCES `label` (`labelId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for moment
+-- ----------------------------
+DROP TABLE IF EXISTS `moment`;
+CREATE TABLE `moment`  (
+  `momentId` int(11) NOT NULL AUTO_INCREMENT,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `text` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `originality` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `powerTpye` int(11) NOT NULL,
+  `momentTimeStamp` timestamp(6) NOT NULL,
+  PRIMARY KEY (`momentId`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `moment_ibfk_1` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table momentPicture(
-pictureId	int	not null AUTO_INCREMENT,
-url	varChar(50) not null,		
-momentId int  not null,
-PRIMARY KEY(pictureId),
-Foreign key (momentId) references originalityMoment(momentId)
-);
+-- ----------------------------
+-- Records of moment
+-- ----------------------------
+INSERT INTO `moment` VALUES (2, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:05:12.050000');
+INSERT INTO `moment` VALUES (3, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:07:02.317000');
+INSERT INTO `moment` VALUES (4, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:09:22.217000');
+INSERT INTO `moment` VALUES (5, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:10:17.160000');
 
+-- ----------------------------
+-- Table structure for momentpicture
+-- ----------------------------
+DROP TABLE IF EXISTS `momentpicture`;
+CREATE TABLE `momentpicture`  (
+  `pictureId` int(11) NOT NULL AUTO_INCREMENT,
+  `url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `momentId` int(11) NOT NULL,
+  PRIMARY KEY (`pictureId`) USING BTREE,
+  INDEX `momentId`(`momentId`) USING BTREE,
+  CONSTRAINT `momentpicture_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for originalitymoment
+-- ----------------------------
+DROP TABLE IF EXISTS `originalitymoment`;
+CREATE TABLE `originalitymoment`  (
+  `momentId` int(11) NOT NULL,
+  `address` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`momentId`) USING BTREE,
+  CONSTRAINT `originalitymoment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table label(
-labelId	int	not null AUTO_INCREMENT,
-description	varChar(50) not null,		
-PRIMARY KEY(labelId)
-);
+-- ----------------------------
+-- Records of originalitymoment
+-- ----------------------------
+INSERT INTO `originalitymoment` VALUES (5, '北京市中南海');
 
+-- ----------------------------
+-- Table structure for powerusers
+-- ----------------------------
+DROP TABLE IF EXISTS `powerusers`;
+CREATE TABLE `powerusers`  (
+  `momentId` int(11) NOT NULL,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`momentId`, `phoneNumber`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `powerusers_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `powerusers_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for session
+-- ----------------------------
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session`  (
+  `sessionId` int(11) NOT NULL AUTO_INCREMENT,
+  `more` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `createTimestamp` timestamp(0) NOT NULL,
+  PRIMARY KEY (`sessionId`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table labelInclude(
-momentId int  not null,
-labelId	int	not null,	
-PRIMARY KEY(momentId,labelId),
-Foreign key (momentId) references originalityMoment(momentId),
-Foreign key (labelId) references label(labelId)
-);
+-- ----------------------------
+-- Table structure for sessionjoin
+-- ----------------------------
+DROP TABLE IF EXISTS `sessionjoin`;
+CREATE TABLE `sessionjoin`  (
+  `sessionId` int(11) NOT NULL,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`sessionId`, `phoneNumber`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `sessionjoin_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `sessionjoin_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for sessionmessage
+-- ----------------------------
+DROP TABLE IF EXISTS `sessionmessage`;
+CREATE TABLE `sessionmessage`  (
+  `sessionId` int(11) NOT NULL,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `text` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `time` timestamp(0) NOT NULL,
+  PRIMARY KEY (`sessionId`, `phoneNumber`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `sessionmessage_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `sessionmessage_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table session(
-sessionId int  not null AUTO_INCREMENT,
-more	varChar(50) not null,	
-createTimestamp	timestamp	not null,	
-PRIMARY KEY(sessionId)
-);
+-- ----------------------------
+-- Table structure for sessionpicture
+-- ----------------------------
+DROP TABLE IF EXISTS `sessionpicture`;
+CREATE TABLE `sessionpicture`  (
+  `sessionId` int(11) NOT NULL,
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `time` timestamp(0) NOT NULL,
+  PRIMARY KEY (`sessionId`, `phoneNumber`) USING BTREE,
+  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `sessionpicture_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `sessionpicture_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users`  (
+  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `avatar` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sex` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sign` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `lastAddress` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`phoneNumber`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
-create table sessionJoin(
-sessionId int  not null,
-phoneNumber	varChar(50) not null,	
-PRIMARY KEY(sessionId,phoneNumber),
-Foreign key (sessionId) references session(sessionId),
-Foreign key (phoneNumber) references users(phoneNumber)
-);
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES ('15273299601', 'han', '111', NULL, NULL, NULL, NULL);
+INSERT INTO `users` VALUES ('222', 'chen', '222', NULL, NULL, NULL, NULL);
 
-
-create table sessionMessage(
-sessionId int  not null,
-phoneNumber	varChar(50) not null,	
-text	varChar(800) not null,	
-time	timestamp	not null,	
-PRIMARY KEY(sessionId,phoneNumber),
-Foreign key (sessionId) references session(sessionId),
-Foreign key (phoneNumber) references users(phoneNumber)
-);
-
-
-create table sessionPicture(
-sessionId int  not null,
-phoneNumber	varChar(50) not null,	
-url	varChar(50) not null,	
-time	timestamp	not null,	
-PRIMARY KEY(sessionId,phoneNumber),
-Foreign key (sessionId) references session(sessionId),
-Foreign key (phoneNumber) references users(phoneNumber)
-);
-
-create table comments(
-	commentId	int	Not	NULL AUTO_INCREMENT,	
-    phoneNumber Varchar(50)	not	NULL,	
-    momentId int   not	NULL,	
-    replyCommentId Varchar(50)	not null,
-    text varchar(100) not null,
-	PRIMARY KEY(commentId),
-	Foreign key (momentId) references moment(momentId),
-    Foreign key (phoneNumber) references users(phoneNumber)
-
-);
+SET FOREIGN_KEY_CHECKS = 1;
