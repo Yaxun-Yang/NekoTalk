@@ -1,6 +1,9 @@
 package org.csu.nekotalk.persistence;
 
-import org.csu.nekotalk.domain.*;
+import org.csu.nekotalk.domain.Session;
+import org.csu.nekotalk.domain.SessionJoin;
+import org.csu.nekotalk.domain.SessionMessage;
+import org.csu.nekotalk.domain.SessionPicture;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,7 +29,13 @@ public interface SessionMapper {
 //
 //    void deleteSessionPicture(SessionPicture sessionPicture);
 
-    //get
+
+
+
+
+
+    String getRecentSessionId(String phoneNumber);
+
     Session getSession(String sessionId);
 
     //获得某用户的所有会话id

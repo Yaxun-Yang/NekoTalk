@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 11/07/2020 15:24:26
+ Date: 14/07/2020 05:42:57
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `comment`  (
   INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for favour
@@ -64,6 +64,7 @@ CREATE TABLE `following`  (
 -- ----------------------------
 -- Records of following
 -- ----------------------------
+INSERT INTO `following` VALUES ('15273299601', '15273299601');
 INSERT INTO `following` VALUES ('15273299601', '222');
 
 -- ----------------------------
@@ -71,13 +72,18 @@ INSERT INTO `following` VALUES ('15273299601', '222');
 -- ----------------------------
 DROP TABLE IF EXISTS `forkmoment`;
 CREATE TABLE `forkmoment`  (
-  `momentId` int(11) NOT NULL,
-  `forkForm` int(11) NOT NULL,
+  `momentId` int(50) NOT NULL,
+  `forkFrom` int(50) NOT NULL,
   PRIMARY KEY (`momentId`) USING BTREE,
-  INDEX `forkForm`(`forkForm`) USING BTREE,
+  INDEX `forkForm`(`forkFrom`) USING BTREE,
   CONSTRAINT `forkmoment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `forkmoment_ibfk_2` FOREIGN KEY (`forkForm`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `forkmoment_ibfk_2` FOREIGN KEY (`forkFrom`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of forkmoment
+-- ----------------------------
+INSERT INTO `forkmoment` VALUES (18, 6);
 
 -- ----------------------------
 -- Table structure for label
@@ -88,6 +94,11 @@ CREATE TABLE `label`  (
   `description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`labelId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of label
+-- ----------------------------
+INSERT INTO `label` VALUES (1, '可爱猫猫');
 
 -- ----------------------------
 -- Table structure for labelinclude
@@ -103,6 +114,11 @@ CREATE TABLE `labelinclude`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of labelinclude
+-- ----------------------------
+INSERT INTO `labelinclude` VALUES (5, 1);
+
+-- ----------------------------
 -- Table structure for moment
 -- ----------------------------
 DROP TABLE IF EXISTS `moment`;
@@ -116,15 +132,15 @@ CREATE TABLE `moment`  (
   PRIMARY KEY (`momentId`) USING BTREE,
   INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
   CONSTRAINT `moment_ibfk_1` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of moment
 -- ----------------------------
-INSERT INTO `moment` VALUES (2, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:05:12.050000');
-INSERT INTO `moment` VALUES (3, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:07:02.317000');
-INSERT INTO `moment` VALUES (4, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:09:22.217000');
-INSERT INTO `moment` VALUES (5, '15273299601', 'this is a moment', 'Y', 1, '2020-07-11 07:10:17.160000');
+INSERT INTO `moment` VALUES (5, '15273299601', 'after update moment', 'Y', 1, '2020-07-11 07:10:17.160000');
+INSERT INTO `moment` VALUES (6, '15273299601', 'this is a moment', 'Y', 1, '2020-07-13 18:43:40.442000');
+INSERT INTO `moment` VALUES (16, '15273299601', 'this is a moment', 'Y', 1, '2020-07-13 20:51:16.031000');
+INSERT INTO `moment` VALUES (18, '15273299601', 'this is a moment', 'N', 1, '2020-07-13 20:51:57.737000');
 
 -- ----------------------------
 -- Table structure for momentpicture
@@ -138,6 +154,11 @@ CREATE TABLE `momentpicture`  (
   INDEX `momentId`(`momentId`) USING BTREE,
   CONSTRAINT `momentpicture_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of momentpicture
+-- ----------------------------
+INSERT INTO `momentpicture` VALUES (2, 'temp', 5);
 
 -- ----------------------------
 -- Table structure for originalitymoment
@@ -154,6 +175,8 @@ CREATE TABLE `originalitymoment`  (
 -- Records of originalitymoment
 -- ----------------------------
 INSERT INTO `originalitymoment` VALUES (5, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (6, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (16, '北京市中南海');
 
 -- ----------------------------
 -- Table structure for powerusers
@@ -241,6 +264,7 @@ CREATE TABLE `users`  (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('15273299601', 'han', '111', NULL, NULL, NULL, NULL);
+INSERT INTO `users` VALUES ('18307331878', 'zhenzhen', '111', 'momentPicture18307331878.jpg', ' female', 'sign ', '湖南省湘潭市');
 INSERT INTO `users` VALUES ('222', 'chen', '222', NULL, NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -8,6 +8,7 @@ import org.csu.nekotalk.domain.Following;
 import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.service.AccountService;
+import org.csu.nekotalk.service.PictureService;
 import org.csu.nekotalk.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,15 @@ public class AccountAPI {
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
         user.setPassword(req.getString("password"));
-        user.setAvatar(req.getString("avatar"));
+
+        String key = "avatar"+user.getPhoneNumber();
+        String base64Picture = req.getString("avatarPicture");
+        String pictureName = req.getString("avatarPictureName");
+        String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
+        key+=fileType;
+        PictureService.uploadImage(base64Picture, key);
+        user.setAvatar(key);
+
         user.setSex(req.getString("sex"));
         user.setSign(req.getString("sign"));
         user.setLastAddress(req.getString("lastAddress"));

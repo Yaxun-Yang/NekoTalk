@@ -17,9 +17,9 @@ public interface MomentMapper {
     
     void insertLabelInclude(LabelInclude labelInclude);
 
-    void insertPower(Map<String, String> param);
+    void insertPower(PowerUsers powerUsers);
     
-    void insertComments(Comment comment);
+    void insertComment(Comment comment);
 
     void insertFavour(Favour favour);
 
@@ -36,7 +36,11 @@ public interface MomentMapper {
 
     void deleteLabelInclude(LabelInclude labelInclude);
 
+    void deleteMomentLabelInclude(String momentId);
+
     void deletePower(PowerUsers powerUsers);
+
+    void deleteMomentPower(String momentId);
 
     //删除某条动态的所有评论
     void deleteAllComments(String momentId);
@@ -46,14 +50,14 @@ public interface MomentMapper {
 
 
     //删除某条评论的所有回复评论
-    void deleteSomeReplyComment(String replyCommentId);
+    void deleteReplyComment(String replyCommentId);
 
 
     //删除某动态的所有点赞
     void deleteAllFavour(String momentId);
 
     //删除一个点赞
-    void deleteFavour(String momentId , String phoneNumber);
+    void deleteFavour(String phoneNumber,String momentId);
 
     //删除某条动态的所有转发
     void deleteAllFork(String forkForm);
@@ -67,10 +71,17 @@ public interface MomentMapper {
     void updateMoment(Moment moment);
 
     //修改评论内容
-    void updateComment(String commentId, String text);
+    void updateComment(Comment comment);
+
+    void updateMomentPicture(MomentPicture momentPicture);
 
     //获取某用户最近一条动态id
     String getRecentMomentId(String phoneNumber);
+
+    //获取动态最新一张图片id
+    String getRecentMomentPictureId(String momentId);
+
+    Comment getCommentByCommentId(String commentId);
 
     //获取具体用户的动态
     List<Moment> getMomentByPhoneNumber(String phoneNumber);
@@ -78,21 +89,39 @@ public interface MomentMapper {
     //获得已知描述的标签id
     String getLabelIdByDescription(String description);
 
-    //获取有某标签的所有动态id
-    List<String> getMomentIdByLabel(String LabelId);
 
     //由动态id获得动态
     Moment getMomentByMomentId(String momentId);
 
+    OriginalityMoment getOriginalityMomentByMomentId(String momentId);
+
+    ForkMoment getForkMomentByMomentId(String momentId);
+
     //获得拥有某关键字的动态
     List<Moment> getMomentByText(String text);
 
-    //获得某用户点赞的所有动态id
+    //获得某用户的所有动态id
     List<String> getMomentIdByPhoneNumber(String phoneNumber);
 
+    //获取有某标签的所有动态id
+    List<String> getMomentIdByLabel(String LabelId);
+
+    //获取用户关注者所有动态id
+    List<String> getMomentIdListByFollowing(String phoneNumber);
+
+    //获取用户所有点赞id
+    List<String> getMomentIdListByFavour(String phoneNumber);
+
     //获取所有动态按时间排序
-    List<Moment> getMomentList();
+    List<String> getMomentIdList();
 
+    List<Comment> getMomentCommentList(String momentIId);
 
+    List<Comment> getReplyCommentList(String commentId);
+
+    int getCommentNumber(String momentId);
+
+    //判断用户是否在权限列表中
+    PowerUsers ifPowerUsers (String momentId, String phoneNumber);
 
 }

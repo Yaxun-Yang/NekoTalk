@@ -76,4 +76,11 @@
        WHERE followingPhoneNumber = #{followingPhoneNumber};
     </select>
 
+    <select id="ifFollowing" resultType="Following">
+        SELECT *
+        FROM FOLLOWING
+        WHERE userPhoneNumber = #{userPhoneNumber}
+        AND followingPhoneNumber = #{followingPhoneNumber};
+    </select>
+
 </mapper>

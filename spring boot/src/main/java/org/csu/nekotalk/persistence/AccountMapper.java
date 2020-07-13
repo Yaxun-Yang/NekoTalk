@@ -31,5 +31,7 @@ public interface AccountMapper {
     //获取用户粉丝电话
     List<String> getFollowedList(String followingPhoneNumber);
 
+    Following ifFollowing(Following following);
+
 
 }

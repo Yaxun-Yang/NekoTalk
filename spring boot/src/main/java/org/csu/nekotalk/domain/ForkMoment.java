@@ -12,6 +12,6 @@ public class ForkMoment {
 
     private String momentId;
 
-    private String forkForm;
+    private String forkFrom;
 
 }

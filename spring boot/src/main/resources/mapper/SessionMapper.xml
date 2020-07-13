@@ -26,6 +26,16 @@
 
 
 
+
+
+    <select id="getRecentSessionId" resultType="String">
+        SELECT sessionId
+        FROM SESSIONJOIN
+        WHERE phoneNumber = #{phoneNumber}
+        ORDER BY sessionJoinId
+        DESC LIMIT 1
+    </select>
+
     <select id="getSession"  resultType="Session">
        SELECT sessionId,more,createTimestamp
        FROM SESSION

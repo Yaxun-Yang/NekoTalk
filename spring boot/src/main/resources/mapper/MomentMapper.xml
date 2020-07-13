@@ -30,7 +30,7 @@
 
     <insert id="insertComment" >
         INSERT INTO COMMENT
-        VALUES(null,#{phoneNumber}, #{momentId},#{replyCommentId},  #{text});
+        VALUES(null,#{phoneNumber}, #{momentId},#{replyCommentId},  #{text}, #{commentTimeStamp});
     </insert>
 
     <insert id="insertFavour" >
@@ -40,7 +40,7 @@
 
     <insert id="insertFork" >
         INSERT INTO ForkMoment
-        VALUES({momentId},  #{forkForm});
+        VALUES(#{momentId},  #{forkFrom});
     </insert>
 
     <insert id="insertOriginalityMoment" >
@@ -78,7 +78,20 @@
         AND MOMENTID = #{momentId};
     </delete>
 
+    <delete id="deleteMomentLabelInclude">
+        DELETE
+        FROM LABELINCLUDE
+        WHERE momentId = #{momentId};
+
+    </delete>
+
     <delete id="deletePower">
+        DELETE
+        FROM POWERUSERS
+        WHERE momentId = #{momentId};
+    </delete>
+
+    <delete id="deleteMomentPower">
         DELETE
         FROM POWERUSERS
         WHERE momentId = #{momentId};
@@ -96,9 +109,9 @@
         WHERE commentId = #{commentId};
     </delete>
 
-    <delete id="deleteSomeReplyComment">
+    <delete id="deleteReplyComment">
         DELETE
-        FROM COMMENTS
+        FROM COMMENT
         WHERE replyCommentId = #{replyCommentId};
     </delete>
 
@@ -118,7 +131,7 @@
     <delete id="deleteAllFork">
         DELETE
         FROM FORKMOMENT
-        WHERE forkForm = #{forkForm};
+        WHERE forkFrom = #{forkFrom};
     </delete>
 
     <delete id="deleteFork">
@@ -150,13 +163,35 @@
 
     </update>
 
+    <update id="updateMomentPicture">
+        UPDATE MOMENTPICTURE
+        SET
+            url = #{url}
+        WHERE pictureId = #{pictureId};
+    </update>
+
     <select id="getRecentMomentId" resultType="String">
         SELECT momentId
         FROM MOMENT
         WHERE phoneNumber = #{phoneNumber}
-        ORDER BY momentId
-        DESC LIMIT 1
+        ORDER BY momentId DESC
+        LIMIT 1
     </select>
+
+    <select id="getRecentMomentPictureId" resultType="String">
+        SELECT pictureId
+        FROM MOMENTPICTURE
+        WHERE momentId = #{momentId}
+        ORDER BY pictureId DESC
+        LIMIT 1
+    </select>
+
+    <select id="getCommentByCommentId" resultType="Comment">
+        SELECT *
+        FROM COMMENT
+        WHERE commentId = #{commentId};
+    </select>
+
     <select id="getMomentByPhoneNumber"  resultType="Moment">
        SELECT momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
        FROM MOMENT
@@ -169,10 +204,11 @@
        WHERE description = #{description};
     </select>
 
-    <select id="getMomentByLabel"  resultType="String">
-       SELECT momentId
-       FROM LabelInclude
-       WHERE LabelId = #{LabelId};
+    <select id="getMomentIdByLabel"  resultType="String">
+       SELECT MOMENT.momentId
+       FROM LABELINCLUDE, MOMENT
+       WHERE labelId = #{labelId}
+       AND MOMENT.momentId = LABELINCLUDE.momentId
        ORDER BY momentTimeStamp DESC
     </select>
 
@@ -182,18 +218,72 @@
        WHERE momentId = #{momentId};
     </select>
 
+    <select id="getOriginalityMomentByMomentId" resultType="OriginalityMoment">
+        SELECT *
+        FROM ORIGINALITYMOMENT
+        WHERE momentId = #{momentId};
+    </select>
+
+    <select id="getForkMomentByMomentId" resultType="ForkMoment">
+        SELECT *
+        FROM FORKMOMENT
+        WHERE momentId = #{momentId};
+    </select>
+
     <select id="getMomentIdByPhoneNumber"  resultType="String">
        SELECT momentId
-       FROM FAVOUR
+       FROM MOMENT
        WHERE phoneNumber = #{phoneNumber}
        ORDER BY momentTimeStamp DESC
     </select>
 
-    <select id="getMomentList" resultType="Moment">
-        SELECT  momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
+
+    <select id="getMomentIdListByFollowing" resultType="String">
+        SELECT momentId
+        FROM MOMENT, FOLLOWING
+        WHERE userPhoneNumber = #{phoneNumber}
+        AND phoneNumber = followingPhoneNumber
+        ORDER BY momentTimeStamp DESC
+    </select>
+
+    <select id="getMomentIdListByFavour" resultType="String">
+         SELECT MOMENT.momentId
+       FROM FAVOUR, MOMENT
+       WHERE FAVOUR.phoneNumber = #{phoneNumber}
+       AND FAVOUR.momentId = MOMENT.momentId
+       ORDER BY momentTimeStamp DESC
+    </select>
+
+    <select id="getMomentIdList" resultType="String">
+        SELECT  momentId
         FROM MOMENT
         ORDER BY momentTimeStamp DESC
     </select>
 
+    <select id="getMomentCommentList" resultType="Comment">
+        SELECT *
+        FROM COMMENT
+        WHERE momentId = #{momentId}
+        AND  replyCommentId = 0;
+    </select>
+
+    <select id="getReplyCommentList" resultType="Comment">
+        SELECT *
+        FROM COMMENT
+        WHERE replyCommentId = #{commentId};
+    </select>
+
+    <select id="getCommentNumber" resultType="int">
+        SELECT count(*)
+        FROM COMMENT
+        WHERE momentId = #{momentId};
+    </select>
+
+    <select id="ifPowerUsers" resultType="PowerUsers">
+        SELECT *
+        FROM POWERUSERS
+        WHERE momentId = #{momentId}
+        AND  phoneNumber = #{phoneNumber};
+    </select>
 
 </mapper>
