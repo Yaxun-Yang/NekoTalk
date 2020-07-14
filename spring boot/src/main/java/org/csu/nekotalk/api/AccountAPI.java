@@ -8,7 +8,6 @@ import org.csu.nekotalk.domain.Following;
 import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.service.AccountService;
-import org.csu.nekotalk.service.PictureService;
 import org.csu.nekotalk.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,15 +33,7 @@ public class AccountAPI {
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
         user.setPassword(req.getString("password"));
-
-        String key = "avatar"+user.getPhoneNumber();
-        String base64Picture = req.getString("avatarPicture");
-        String pictureName = req.getString("avatarPictureName");
-        String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
-        key+=fileType;
-        PictureService.uploadImage(base64Picture, key);
-        user.setAvatar(key);
-
+        user.setAvatar(req.getString("avatar"));
         user.setSex(req.getString("sex"));
         user.setSign(req.getString("sign"));
         user.setLastAddress(req.getString("lastAddress"));
@@ -126,6 +117,7 @@ public class AccountAPI {
     @PostMapping("/following")
     public ResponseTemplate following (@RequestBody JSONObject req)
     {
+        System.out.println("???"+req.getString("userPhoneNumber"));
         Following following=new Following();
         following.setUserPhoneNumber(req.getString("userPhoneNumber"));
         following.setFollowingPhoneNumber(req.getString("followingPhoneNumber"));
@@ -140,11 +132,11 @@ public class AccountAPI {
 
 
     @DeleteMapping("/user/{phoneNumber}")
-    public ResponseTemplate deleteUser(@PathVariable String phoneNumber)
+    public ResponseTemplate deleteUser(@RequestParam String phoneNumber)
     {
         System.out.println(phoneNumber);
-
-        accountService.deleteUser(phoneNumber);
+//
+//        accountService.deleteUser(phoneNumber);
         return ResponseTemplate.builder()
                 .status(200)
                 .statusText("OK")
@@ -207,7 +199,7 @@ public class AccountAPI {
 
 
     @GetMapping("/user/{phoneNumber}")
-    public ResponseTemplate getUser(@PathVariable String phoneNumber)
+    public ResponseTemplate getUser(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
 
@@ -223,7 +215,7 @@ public class AccountAPI {
 
 
     @GetMapping("/followingList/{phoneNumber}")
-    public ResponseTemplate getFollowingList(@PathVariable String phoneNumber)
+    public ResponseTemplate getFollowingList(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
         System.out.print(phoneNumber);
@@ -238,7 +230,7 @@ public class AccountAPI {
     }
 
     @GetMapping("/followedList/{phoneNumber}")
-    public ResponseTemplate getFollowedList(@PathVariable String phoneNumber)
+    public ResponseTemplate getFollowedList(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
 
