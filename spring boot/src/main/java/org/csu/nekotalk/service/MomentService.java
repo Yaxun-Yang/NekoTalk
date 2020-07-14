@@ -132,7 +132,7 @@ public class MomentService {
         data.put("momentTimeStamp", moment.getMomentTimeStamp());
         if (moment.getOriginality().equals("Y")) {
             OriginalityMoment originalityMoment = momentMapper.getOriginalityMomentByMomentId(momentId);
-            data.put("picture",momentMapper.getFirstMomentPicture(momentId));
+            data.put("url",momentMapper.getFirstMomentPicture(momentId).getUrl());
             data.put("pictureList", momentMapper.getMomentPictureListByMomentId(momentId));
             data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(momentId));
             data.put("address", originalityMoment.getAddress());
