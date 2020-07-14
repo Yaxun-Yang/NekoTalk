@@ -9,6 +9,7 @@ import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.service.AccountService;
 import org.csu.nekotalk.service.TokenService;
+import org.csu.nekotalk.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -131,7 +132,7 @@ public class AccountAPI {
 
 
 
-    @DeleteMapping("/user/{phoneNumber}")
+    @DeleteMapping("/user")
     public ResponseTemplate deleteUser(@RequestParam String phoneNumber)
     {
         System.out.println(phoneNumber);
@@ -238,7 +239,7 @@ public class AccountAPI {
                 .build();
     }
 
-    @GetMapping("/user/{phoneNumber}")
+    @GetMapping("/user")
     public ResponseTemplate getUser(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
@@ -254,7 +255,7 @@ public class AccountAPI {
 
 
 
-    @GetMapping("/followingList/{phoneNumber}")
+    @GetMapping("/followingList")
     public ResponseTemplate getFollowingList(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
@@ -269,7 +270,7 @@ public class AccountAPI {
                 .build();
     }
 
-    @GetMapping("/followedList/{phoneNumber}")
+    @GetMapping("/followedList")
     public ResponseTemplate getFollowedList(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();

@@ -92,7 +92,7 @@ public class SessionAPI {
     /**
      * get
      */
-    @GetMapping("/session/{sessionId}")
+    @GetMapping("/session")
     public ResponseTemplate getSession(@RequestParam String sessionId){
         JSONObject data = new JSONObject();
         data.put("session",sessionService.getSessionBySessionId(sessionId));
@@ -104,7 +104,7 @@ public class SessionAPI {
                 .build();
     }
 
-    @GetMapping("/sessionList/{phoneNumber}")
+    @GetMapping("/sessionList")
     public ResponseTemplate getUserSession(@RequestParam String phoneNumber){
         JSONObject data = new JSONObject();
 
@@ -117,7 +117,7 @@ public class SessionAPI {
                 .build();
     }
 
-    @GetMapping("/messageList/{sessionId}")
+    @GetMapping("/messageList")
     public ResponseTemplate getMessageList(@RequestParam String sessionId){
         JSONObject data = new JSONObject();
 
@@ -130,7 +130,7 @@ public class SessionAPI {
                 .build();
     }
 
-    @GetMapping("/pictureList/{sessionId}")
+    @GetMapping("/pictureList")
     public ResponseTemplate getPictureList(@RequestParam String sessionId){
         JSONObject data = new JSONObject();
 
@@ -143,7 +143,7 @@ public class SessionAPI {
                 .build();
     }
 
-    @GetMapping("/phoneNumberList/{sessionId}")
+    @GetMapping("/phoneNumberList")
     public ResponseTemplate getPhoneNumberList(@RequestParam String sessionId){
         JSONObject data = new JSONObject();
 
