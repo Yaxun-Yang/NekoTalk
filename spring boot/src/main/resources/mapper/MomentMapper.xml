@@ -186,6 +186,12 @@
         LIMIT 1
     </select>
 
+    <select id="getMomentPictureListByMomentId" resultType="MomentPicture">
+        SELECT *
+        FROM MOMENTPICTURE
+        WHERE momentId = #{momentId};
+    </select>
+
     <select id="getCommentByCommentId" resultType="Comment">
         SELECT *
         FROM COMMENT
@@ -196,6 +202,13 @@
        SELECT momentId,phoneNumber,text,originality,powerTpye, momentTimeStamp
        FROM MOMENT
        WHERE phoneNumber = #{phoneNumber};
+    </select>
+
+    <select id="getLabelDescriptionByMomentId" resultType="String">
+        SELECT description
+        FROM LABEL, LABELINCLUDE
+        WHERE LABEL.labelId = LABELINCLUDE.labelId
+        AND momentId = #{momentId};
     </select>
 
     <select id="getLabelIdByDescription"  resultType="String">

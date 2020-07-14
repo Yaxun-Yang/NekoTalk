@@ -132,6 +132,8 @@ public class MomentService {
         data.put("momentTimeStamp", moment.getMomentTimeStamp());
         if (moment.getOriginality().equals("Y")) {
             OriginalityMoment originalityMoment = momentMapper.getOriginalityMomentByMomentId(momentId);
+            data.put("pictureList", momentMapper.getMomentPictureListByMomentId(momentId));
+            data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(momentId));
             data.put("address", originalityMoment.getAddress());
         } else {
             ForkMoment forkMoment = momentMapper.getForkMomentByMomentId(momentId);

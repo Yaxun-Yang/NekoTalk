@@ -62,8 +62,12 @@ public class MomentAPI {
         String pictureName = req.getString("pictureName");
         String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
         key+=fileType;
-        momentPicture.setUrl(key);
         PictureService.uploadImage(base64Picture, key);
+
+        momentPicture.setPictureId(momentService.getRecentPictureId(momentId));
+        momentPicture.setUrl(key);
+        momentService.updateMomentPicture(momentPicture);
+
 
         return ResponseTemplate.builder()
                 .status(200)

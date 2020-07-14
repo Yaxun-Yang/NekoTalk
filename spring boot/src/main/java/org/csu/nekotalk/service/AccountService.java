@@ -19,11 +19,6 @@ public class AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
-    @Autowired
-    private MomentMapper momentMapper;
-
-    @Autowired
-    private SessionMapper sessionMapper;
 
 
     public void insertUser(Users user){
@@ -44,6 +39,18 @@ public class AccountService {
     public void insertFollowing(Following following){ accountMapper.insertFollowing(following);}
 
     public void deleteFollowing(Following following){ accountMapper.deleteFollowing(following);}
+
+    public boolean ifFollowing (String userPhoneNumber, String followingPhoneNumber)
+    {
+        Following following = new Following(userPhoneNumber, followingPhoneNumber);
+        return (accountMapper.ifFollowing(following) == null)? false:true;
+    }
+
+    public boolean ifFollowed(String userPhoneNumber, String followedPhoneNumber)
+    {
+        Following following = new Following(followedPhoneNumber, userPhoneNumber);
+        return (accountMapper.ifFollowing(following) == null)?false : true;
+    }
 
     //获取关注列表
     public List<Users> getFollowingList(String userPhoneNumber){

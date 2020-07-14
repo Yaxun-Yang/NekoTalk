@@ -81,6 +81,8 @@ public interface MomentMapper {
     //获取动态最新一张图片id
     String getRecentMomentPictureId(String momentId);
 
+    List<MomentPicture> getMomentPictureListByMomentId(String momentId);
+
     Comment getCommentByCommentId(String commentId);
 
     //获取具体用户的动态
@@ -89,6 +91,7 @@ public interface MomentMapper {
     //获得已知描述的标签id
     String getLabelIdByDescription(String description);
 
+    String getLabelDescriptionByMomentId(String momentId);
 
     //由动态id获得动态
     Moment getMomentByMomentId(String momentId);

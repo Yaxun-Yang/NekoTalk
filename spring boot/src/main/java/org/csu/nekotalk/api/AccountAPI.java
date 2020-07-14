@@ -184,14 +184,28 @@ public class AccountAPI {
 
     @PutMapping("/user")
     @UserLoginToken
-    public ResponseTemplate updateUser (@RequestBody JSONObject req)throws QiniuException
+    public ResponseTemplate updateUser (@RequestBody JSONObject req)
     {
 
         Users user = new Users();
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
         user.setPassword(req.getString("password"));
-        user.setAvatar(req.getString("avatar"));
+        if(req.getString("avatar") != null)
+        {
+            user.setAvatar(req.getString("avatar"));
+        }
+        else
+        {
+            String key = "avatar"+user.getPhoneNumber();
+            String base64Picture = req.getString("avatarPicture");
+            String pictureName = req.getString("avatarPictureName");
+            String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
+            key+=fileType;
+            PictureService.uploadImage(base64Picture, key);
+            user.setAvatar(key);
+        }
+
         user.setSex(req.getString("sex"));
         user.setSign(req.getString("sign"));
         user.setLastAddress(req.getString("lastAddress"));
@@ -205,6 +219,32 @@ public class AccountAPI {
                 .build();
     }
 
+
+    @GetMapping("/followingJudge")
+    public ResponseTemplate judgeFollowing(@RequestParam String userPhoneNumber, @RequestParam String followingPhoneNumber)
+    {
+        JSONObject data = new JSONObject();
+        data.put("result", accountService.ifFollowing(userPhoneNumber, followingPhoneNumber));
+
+        return ResponseTemplate.builder()
+                .status(200)
+                .statusText("OK")
+                .data(data)
+                .build();
+    }
+
+    @GetMapping("/followedJudge")
+    public ResponseTemplate judgeFollowed(@RequestParam String userPhoneNumber, @RequestParam String followedPhoneNumber)
+    {
+        JSONObject data = new JSONObject();
+        data.put("result", accountService.ifFollowed(userPhoneNumber, followedPhoneNumber));
+
+        return ResponseTemplate.builder()
+                .status(200)
+                .statusText("OK")
+                .data(data)
+                .build();
+    }
 
     @GetMapping("/user/{phoneNumber}")
     public ResponseTemplate getUser(@PathVariable String phoneNumber)
