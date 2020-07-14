@@ -20,7 +20,7 @@ public class PictureService {
     static Auth auth = Auth.create(accessKey, secretKey);
     //存储空间名
     static String bucketName = "nekotalk";
-    final static public String domain="http://qdeujgrtl.bkt.clouddn.com";
+    final static public String domain="http://qdeujgrtl.bkt.clouddn.com/";
 
     public static void refresh(String url) throws QiniuException {
         String[] urls = {url};

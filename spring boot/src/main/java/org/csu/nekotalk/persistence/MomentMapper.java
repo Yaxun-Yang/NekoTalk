@@ -81,6 +81,8 @@ public interface MomentMapper {
     //获取动态最新一张图片id
     String getRecentMomentPictureId(String momentId);
 
+    MomentPicture getFirstMomentPicture(String momentId);
+
     List<MomentPicture> getMomentPictureListByMomentId(String momentId);
 
     Comment getCommentByCommentId(String commentId);

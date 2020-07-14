@@ -8,6 +8,7 @@ import org.csu.nekotalk.domain.Following;
 import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.service.AccountService;
+import org.csu.nekotalk.service.MD5Service;
 import org.csu.nekotalk.service.TokenService;
 import org.csu.nekotalk.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,17 @@ public class AccountAPI {
         Users user = new Users();
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
-        user.setPassword(req.getString("password"));
-        user.setAvatar(req.getString("avatar"));
+        user.setPassword(MD5Service.getMD5(req.getString("password")));
+
+        String key = "avatar"+user.getPhoneNumber();
+        String base64Picture = req.getString("avatarPicture");
+        String pictureName = req.getString("avatarPictureName");
+        String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
+        key+=fileType;
+        PictureService.uploadImage(base64Picture, key);
+        user.setAvatar(PictureService.domain+key);
+
+
         user.setSex(req.getString("sex"));
         user.setSign(req.getString("sign"));
         user.setLastAddress(req.getString("lastAddress"));
@@ -52,13 +62,16 @@ public class AccountAPI {
     public ResponseTemplate login(@RequestBody  JSONObject req, HttpServletRequest httpServletRequest)
     {
         String phoneNumber = req.getString("phoneNumber");
-        String password = req.getString("password");
+        String password =MD5Service.getMD5(req.getString("password"));
         String verifyCode = req.getString("verifyCode");
         JSONObject data=new JSONObject();
         HttpSession session=  httpServletRequest.getSession();
         String code =(String) session.getAttribute("code");
         //String code="188234";
         session.setAttribute("code",null);
+
+        int status = 200;
+        String statusText = "";
         if(verifyCode.equals(code))
         {
             Users user = accountService.getUserByPhoneNumberAndPassword(phoneNumber,password);
@@ -68,29 +81,28 @@ public class AccountAPI {
 
                 data.put("user", user);
                 data.put("token", token);
-                return ResponseTemplate.builder()
-                        .status(206)
-                        .statusText("用户登录成功")
-                        .data(data)
-                        .build();
+
+                status = 206;
+                statusText = "用户登录成功";
+
             }
             else
             {
-                return ResponseTemplate.builder()
-                        .status(423)
-                        .statusText("用户名或密码错误")
-                        .build();
+                status = 423;
+                statusText = "用户名或密码错误";
+
             }
         }
         else {
-
-            return ResponseTemplate.builder()
-                    .status(424)
-                    .statusText("验证码错误")
-                    .build();
+            status =424 ;
+            statusText ="验证码错误" ;
         }
 
-
+        return ResponseTemplate.builder()
+                .status(status)
+                .statusText(statusText)
+                .data(data)
+                .build();
     }
 
 
@@ -118,7 +130,7 @@ public class AccountAPI {
     @PostMapping("/following")
     public ResponseTemplate following (@RequestBody JSONObject req)
     {
-        System.out.println("???"+req.getString("userPhoneNumber"));
+       // System.out.println("???"+req.getString("userPhoneNumber"));
         Following following=new Following();
         following.setUserPhoneNumber(req.getString("userPhoneNumber"));
         following.setFollowingPhoneNumber(req.getString("followingPhoneNumber"));
@@ -135,9 +147,11 @@ public class AccountAPI {
     @DeleteMapping("/user")
     public ResponseTemplate deleteUser(@RequestParam String phoneNumber)
     {
-        System.out.println(phoneNumber);
+  //      System.out.println(phoneNumber);
 //
-//        accountService.deleteUser(phoneNumber);
+        accountService.deleteUser(phoneNumber);
+
+
         return ResponseTemplate.builder()
                 .status(200)
                 .statusText("OK")
@@ -196,7 +210,7 @@ public class AccountAPI {
             String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
             key+=fileType;
             PictureService.uploadImage(base64Picture, key);
-            user.setAvatar(key);
+            user.setAvatar(PictureService.domain+key);
         }
 
         user.setSex(req.getString("sex"));

@@ -14,6 +14,6 @@ public class Session {
 
     private String sessionId;
     private String more;
-    private Timestamp createTimestamp;
+    private Timestamp createTimeStamp;
 
 }

@@ -3,7 +3,6 @@ package org.csu.nekotalk.persistence;
 import org.csu.nekotalk.domain.Session;
 import org.csu.nekotalk.domain.SessionJoin;
 import org.csu.nekotalk.domain.SessionMessage;
-import org.csu.nekotalk.domain.SessionPicture;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,8 +16,7 @@ public interface SessionMapper {
     void insertSessionJoin(SessionJoin sessionJoin);
     
     void insertSessionMessage(SessionMessage sessionMessage);
-    
-    void insertSessionPicture(SessionPicture sessionPicture);
+
 
     //delete
 //    void deleteSession(Session session);
@@ -28,12 +26,13 @@ public interface SessionMapper {
 //    void deleteSessionMessage(SessionMessage sessionMessage);
 //
 //    void deleteSessionPicture(SessionPicture sessionPicture);
+    //update
+    void updateSessionMessage(SessionMessage sessionMessage);
 
 
 
 
-
-
+//get
     String getRecentSessionId(String phoneNumber);
 
     Session getSession(String sessionId);
@@ -41,9 +40,10 @@ public interface SessionMapper {
     //获得某用户的所有会话id
     List<Integer> getUserSession(String phoneNumber);
 
+    String getRecentSessionMessageId(String sessionId);
+
     List<SessionMessage> getSessionMessage(String sessionId);
 
-    List<SessionPicture> getSessionPicture(String sessionId);
 
     //获取某会话的参与人电话
     List<String> getSessionJoin(String sessionId);

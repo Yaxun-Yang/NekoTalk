@@ -26,7 +26,11 @@ public class AccountService {
     }
 
     @Transactional
-    public void deleteUser(String phoneNUmber) { accountMapper.deleteUser(phoneNUmber); }
+    public void deleteUser(String phoneNUmber)
+    {
+
+        accountMapper.deleteUser(phoneNUmber);
+    }
 
     public void updateUser(Users user){ accountMapper.updateUser(user); }
 

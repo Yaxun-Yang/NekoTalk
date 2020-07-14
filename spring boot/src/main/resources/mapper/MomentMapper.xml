@@ -178,12 +178,19 @@
         LIMIT 1
     </select>
 
+    <select id="getFirstMomentPicture" resultType="MomentPicture">
+        SELECT *
+        FROM MOMENTPICTURE
+        WHERE momentId = #{momentId}
+        LIMIT 1;
+    </select>
+
     <select id="getRecentMomentPictureId" resultType="String">
         SELECT pictureId
         FROM MOMENTPICTURE
         WHERE momentId = #{momentId}
         ORDER BY pictureId DESC
-        LIMIT 1
+        LIMIT 1;
     </select>
 
     <select id="getMomentPictureListByMomentId" resultType="MomentPicture">

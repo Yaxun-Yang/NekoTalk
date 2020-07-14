@@ -65,7 +65,7 @@ public class MomentAPI {
         PictureService.uploadImage(base64Picture, key);
 
         momentPicture.setPictureId(momentService.getRecentPictureId(momentId));
-        momentPicture.setUrl(key);
+        momentPicture.setUrl(PictureService.domain+key);
         momentService.updateMomentPicture(momentPicture);
 
 

@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 14/07/2020 13:39:08
+ Date: 15/07/2020 01:07:06
 */
 
 SET NAMES utf8mb4;
@@ -47,6 +47,11 @@ CREATE TABLE `favour`  (
   CONSTRAINT `favour_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `favour_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of favour
+-- ----------------------------
+INSERT INTO `favour` VALUES (5, '15273299601');
 
 -- ----------------------------
 -- Table structure for following
@@ -148,7 +153,7 @@ INSERT INTO `moment` VALUES (18, '15273299601', 'this is a moment', 'N', 1, '202
 DROP TABLE IF EXISTS `momentpicture`;
 CREATE TABLE `momentpicture`  (
   `pictureId` int(11) NOT NULL AUTO_INCREMENT,
-  `url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `momentId` int(11) NOT NULL,
   PRIMARY KEY (`pictureId`) USING BTREE,
   INDEX `momentId`(`momentId`) USING BTREE,
@@ -158,7 +163,10 @@ CREATE TABLE `momentpicture`  (
 -- ----------------------------
 -- Records of momentpicture
 -- ----------------------------
-INSERT INTO `momentpicture` VALUES (2, 'temp', 5);
+INSERT INTO `momentpicture` VALUES (4, 'momentPicture4.jpg', 5);
+INSERT INTO `momentpicture` VALUES (5, 'momentPicture5.jpg', 5);
+INSERT INTO `momentpicture` VALUES (6, 'momentPicture6.jpg', 5);
+INSERT INTO `momentpicture` VALUES (8, 'http://qdeujgrtl.bkt.clouddn.com/momentPicture8.jpg', 5);
 
 -- ----------------------------
 -- Table structure for originalitymoment
@@ -198,9 +206,15 @@ DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session`  (
   `sessionId` int(11) NOT NULL AUTO_INCREMENT,
   `more` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `createTimestamp` timestamp(0) NOT NULL,
+  `createTimeStamp` timestamp(0) NOT NULL,
   PRIMARY KEY (`sessionId`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of session
+-- ----------------------------
+INSERT INTO `session` VALUES (1, 'Y', '2020-07-14 16:49:44');
+INSERT INTO `session` VALUES (2, 'Y', '2020-07-14 16:52:17');
 
 -- ----------------------------
 -- Table structure for sessionjoin
@@ -216,34 +230,36 @@ CREATE TABLE `sessionjoin`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of sessionjoin
+-- ----------------------------
+INSERT INTO `sessionjoin` VALUES (2, '15273299601');
+INSERT INTO `sessionjoin` VALUES (2, '18307331878');
+
+-- ----------------------------
 -- Table structure for sessionmessage
 -- ----------------------------
 DROP TABLE IF EXISTS `sessionmessage`;
 CREATE TABLE `sessionmessage`  (
+  `messageId` int(50) NOT NULL AUTO_INCREMENT,
   `sessionId` int(11) NOT NULL,
   `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `text` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `time` timestamp(0) NOT NULL,
-  PRIMARY KEY (`sessionId`, `phoneNumber`) USING BTREE,
-  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
-  CONSTRAINT `sessionmessage_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `sessionmessage_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `text` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `sessionTimeStamp` timestamp(0) NOT NULL,
+  PRIMARY KEY (`messageId`) USING BTREE,
+  INDEX `sessionmessage1`(`sessionId`) USING BTREE,
+  INDEX `sessionmessage2`(`phoneNumber`) USING BTREE,
+  CONSTRAINT `sessionmessage1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `sessionmessage2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for sessionpicture
+-- Records of sessionmessage
 -- ----------------------------
-DROP TABLE IF EXISTS `sessionpicture`;
-CREATE TABLE `sessionpicture`  (
-  `sessionId` int(11) NOT NULL,
-  `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `url` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `time` timestamp(0) NOT NULL,
-  PRIMARY KEY (`sessionId`, `phoneNumber`) USING BTREE,
-  INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
-  CONSTRAINT `sessionpicture_ibfk_1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `sessionpicture_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+INSERT INTO `sessionmessage` VALUES (1, 2, '15273299601', 'hello', NULL, '2020-07-14 17:01:23');
+INSERT INTO `sessionmessage` VALUES (2, 2, '15273299601', 'hello', NULL, '2020-07-14 17:02:24');
+INSERT INTO `sessionmessage` VALUES (3, 2, '15273299601', 'hello', NULL, '2020-07-14 17:03:07');
+INSERT INTO `sessionmessage` VALUES (4, 2, '15273299601', 'hello', NULL, '2020-07-14 17:03:30');
 
 -- ----------------------------
 -- Table structure for users
@@ -253,7 +269,7 @@ CREATE TABLE `users`  (
   `phoneNumber` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `avatar` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `sex` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `sign` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `lastAddress` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,

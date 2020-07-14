@@ -5,7 +5,7 @@
 
     <insert id="insertSession" >
         INSERT INTO SESSION
-        VALUES(null,#{more},  current_timestamp );
+        VALUES(null,#{more},  #{createTimeStamp} );
     </insert>
 
     <insert id="insertSessionJoin" >
@@ -15,25 +15,31 @@
 
     <insert id="insertSessionMessage" >
         INSERT INTO SESSIONMESSAGE
-        VALUES(#{sessionId},#{phoneNumber},  #{text}, current_timestamp);
+        VALUES(null,#{sessionId},#{phoneNumber},  #{text}, #{picture}, #{sessionTimeStamp});
     </insert>
 
-    <insert id="insertSessionPicture" >
-        INSERT INTO SESSIONPICTURE
-        VALUES(#{sessionId}, #{phoneNumber},#{url}, current_timestamp );
-    </insert>
+    <update id="updateSessionMessage">
+        UPDATE SESSIONMESSAGE
+        SET
+            picture = #{picture}
+        WHERE messageId = #{messageId};
+    </update>
 
 
-
-
-
+    <select id="getRecentSessionMessageId" resultType="String">
+        SELECT messageId
+        FROM SESSIONMESSAGE
+        WHERE sessionId = #{session}
+        ORDER BY messageId DESC
+        LIMIT 1;
+    </select>
 
     <select id="getRecentSessionId" resultType="String">
         SELECT sessionId
         FROM SESSIONJOIN
         WHERE phoneNumber = #{phoneNumber}
-        ORDER BY sessionJoinId
-        DESC LIMIT 1
+        ORDER BY sessionId DESC
+        LIMIT 1;
     </select>
 
     <select id="getSession"  resultType="Session">
@@ -49,16 +55,11 @@
     </select>
 
     <select id="getSessionMessage"  resultType="SessionMessage">
-       SELECT sessionId,phoneNumber,text,time
+       SELECT *
        FROM SESSIONMESSAGE
        WHERE sessionId = #{sessionId};
     </select>
 
-    <select id="getSessionPicture"  resultType="SessionPicture">
-       SELECT sessionId,phoneNumber,url,time
-       FROM SESSIONPICTURE
-       WHERE sessionId = #{sessionId};
-    </select>
 
     <select id="getSessionJoin"  resultType="String">
        SELECT phoneNumber

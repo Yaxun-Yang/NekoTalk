@@ -3,7 +3,6 @@ package org.csu.nekotalk.service;
 import org.csu.nekotalk.domain.Session;
 import org.csu.nekotalk.domain.SessionJoin;
 import org.csu.nekotalk.domain.SessionMessage;
-import org.csu.nekotalk.domain.SessionPicture;
 import org.csu.nekotalk.persistence.SessionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,14 +30,17 @@ public class SessionService {
         sessionMapper.insertSessionMessage(sessionMessage);
     }
 
-    public void insertSessionPicture(SessionPicture sessionPicture){
-        sessionMapper.insertSessionPicture(sessionPicture);
-    }
 
     /**
      * delete 认为用户删除会话并不能直接对数据库进行修改，
      * 故逻辑实现不包括删除功能
      */
+
+
+    public void updateSessionMessage(SessionMessage sessionMessage)
+    {
+        sessionMapper.updateSessionMessage(sessionMessage);
+    }
 
     /**
      * Get
@@ -49,6 +51,11 @@ public class SessionService {
 
     public String getRecentSessionId(String phoneNumber){
         return sessionMapper.getRecentSessionId(phoneNumber);
+    }
+
+    public String getRecentMessageId(String sessionId)
+    {
+        return sessionMapper.getRecentSessionMessageId(sessionId);
     }
 
     public Session getSessionBySessionId(String sessionId){
@@ -65,10 +72,6 @@ public class SessionService {
         return sessionMapper.getSessionMessage(sessionId);
     }
 
-    //返回某个会话的图片列表
-    public List<SessionPicture> getAllSessionPicture(String sessionId){
-        return sessionMapper.getSessionPicture(sessionId);
-    }
 
     //获取群聊中所有用户电话号码
     public List<String> getAllSessionJoinNumber(String sessionId){

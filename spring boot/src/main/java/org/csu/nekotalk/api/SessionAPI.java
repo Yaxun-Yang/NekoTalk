@@ -4,6 +4,7 @@ package org.csu.nekotalk.api;
 
 import com.alibaba.fastjson.JSONObject;
 import org.csu.nekotalk.domain.*;
+import org.csu.nekotalk.service.PictureService;
 import org.csu.nekotalk.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,8 @@ public class SessionAPI {
     public ResponseTemplate insertSession(@RequestBody JSONObject req){
         Session session = new Session();
         session.setMore(req.getString("more"));
-        session.setCreateTimestamp(new Timestamp(System.currentTimeMillis()));
+        session.setCreateTimeStamp(new Timestamp(System.currentTimeMillis()));
         sessionService.insertSession(session);
-
-        session.setSessionId(sessionService.getRecentSessionId(session.getSessionId()));
 
         return ResponseTemplate.builder()
                 .status(200)
@@ -55,9 +54,20 @@ public class SessionAPI {
         sessionMessage.setSessionId(req.getString("sessionId"));
         sessionMessage.setPhoneNumber(req.getString("phoneNumber"));
         sessionMessage.setText(req.getString("text"));
-        sessionMessage.setTime(new Timestamp(System.currentTimeMillis()));
-
+        sessionMessage.setSessionTimeStamp(new Timestamp(System.currentTimeMillis()));
         sessionService.insertSessionMessage(sessionMessage);
+
+        if(req.getString("sessionPicture") != null)
+        {
+            String key = "message"+sessionService.getRecentMessageId(sessionMessage.getSessionId());
+            String base64Picture = req.getString("sessionPicture");
+            String pictureName = req.getString("sessionPictureName");
+            String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
+            key+=fileType;
+            PictureService.uploadImage(base64Picture, key);
+            sessionMessage.setPicture(PictureService.domain+key);
+            sessionService.updateSessionMessage(sessionMessage);
+        }
 
         return ResponseTemplate.builder()
                 .status(200)
@@ -65,20 +75,6 @@ public class SessionAPI {
                 .build();
     }
 
-    @PostMapping("/sessionPicture")
-    public ResponseTemplate insertSessionPicture(@RequestBody JSONObject req){
-        SessionPicture sessionPicture = new SessionPicture();
-        sessionPicture.setSessionId(req.getString("sessionId"));
-        sessionPicture.setPhoneNumber(req.getString("phoneNumber"));
-        sessionPicture.setUrl(req.getString("url"));
-        sessionPicture.setTime(new Timestamp(System.currentTimeMillis()));
-        sessionService.insertSessionPicture(sessionPicture);
-
-        return ResponseTemplate.builder()
-                .status(200)
-                .statusText("OK")
-                .build();
-        }
 
     /**
      * delete
@@ -130,18 +126,6 @@ public class SessionAPI {
                 .build();
     }
 
-    @GetMapping("/pictureList")
-    public ResponseTemplate getPictureList(@RequestParam String sessionId){
-        JSONObject data = new JSONObject();
-
-        data.put("pictureList",sessionService.getAllSessionPicture(sessionId));
-
-        return ResponseTemplate.builder()
-                .status(200)
-                .statusText("OK")
-                .data(data)
-                .build();
-    }
 
     @GetMapping("/phoneNumberList")
     public ResponseTemplate getPhoneNumberList(@RequestParam String sessionId){
