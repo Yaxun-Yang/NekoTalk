@@ -45,6 +45,14 @@
 			}
 		},
 		{
+			"path": "pages/tabbar/tabbar-1/user",
+			"style": {
+					"navigationBarTitleText": "人"
+			// "navigationStyle": "custom", // 隐藏系统导航栏
+			// "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		{
 			"path": "pages/tabbar/tabbar-2/tabbar-2",
 			"style": {
 				"navigationBarTitleText": "附近猫咖"

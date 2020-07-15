@@ -28,14 +28,10 @@
 			setTimeout(() => {
 				uni.switchTab({
 					url: "/pages/tabbar/tabbar-1/tabbar-1",
-					success: function(e) {
-						var page = getCurrentPages().pop();
-						if (page == undefined || page == null) return;
-						page.onLoad();
-					}
+			
 				})
 
-			}, 170)
+			}, 100)
 
 		},
 		methods: {

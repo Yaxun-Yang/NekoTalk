@@ -1,7 +1,9 @@
 <template>
 	<view class="wrap">
   <u-button @click="submit()"></u-button>
-  {{this.model}}
+  {{model}}
+  {{num}}
+  {{cou}}
   <!-- 提示 -->
   <u-top-tips ref="uTips"></u-top-tips>
 	</view>
@@ -12,7 +14,8 @@
 		data() {
 	
 			return {
-			
+			num: '22',
+			cou: '11',
 				model: {
 					phoneNumber: '222',
 					text: 'yes',
@@ -48,6 +51,9 @@
 					// 	type: 'success',
 					// 	duration: '1300'
 					// })
+					uni.request({
+						
+					})
 				}
 			});
 

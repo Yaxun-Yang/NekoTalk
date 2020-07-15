@@ -20,7 +20,7 @@
 				<view class="set">
 					<u-popup v-model="show">
 						<view class="userForm">
-							<u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
+							<u-form :model="model" :rules="rules" ref="uForm" :errorType="['message']">
 								<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" label-width="120" :label-position="labelPosition"
 								 label="昵称" prop="name">
 									<u-input :border="border" placeholder="请输入昵称" v-model="model.name" type="text"></u-input>
@@ -54,7 +54,7 @@
 								</u-form-item>
 
 								<u-form-item :label-position="labelPosition" label="上传图片" prop="photo" label-width="150">
-									<u-upload width="160"></u-upload>
+									<u-button @click="getPhoto()"></u-button>
 								</u-form-item>
 							</u-form>
 
@@ -103,31 +103,31 @@
 			<!-- 三个 -->
 			<view class="padd">
 				<u-row justify="around" style="width: 160px;padding-left: 7px;">
-					<u-col span="4" >
+					<u-col span="4">
 						<view @click="allFollowing()">
 							{{allFollowings}}
 						</view>
 					</u-col>
 					<u-col span="4">
 						<view @click="allFan()">
-						{{allFans}}
+							{{allFans}}
 						</view>
 					</u-col>
 					<u-col span="4">
 						<view @click="allStar()">
 							{{allStars}}
 						</view>
-						
+
 					</u-col>
 				</u-row>
 				<u-row justify="around" style="width: 160px;">
-					<u-col span="4" >
+					<u-col span="4">
 						关注
 					</u-col>
-					<u-col span="4" >
+					<u-col span="4">
 						粉丝
 					</u-col>
-					<u-col span="4" >
+					<u-col span="4">
 						获赞
 					</u-col>
 				</u-row>
@@ -373,11 +373,25 @@
 </template>
 
 <script>
+import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js'
+
+
+
 	export default {
 		data() {
 			return {
 				//form
 				model: {
+					phoneNumber: '',
+					username: '',
+					password: '',
+					avatarPicture: '',
+					avatarPictureName: '',
+					sex: 'female',
+					sign: 'sign',
+					lastAddress: '湖南省湘潭市',
+
+
 					name: '',
 					sex: '',
 					likeFruit: '',
@@ -610,7 +624,7 @@
 				allFollowings: 11,
 				allFans: 15,
 				user: {},
-				show: false,
+				show: true,
 				// 搜索
 				value: '',
 				headList: [{
@@ -736,6 +750,8 @@
 			}, 1000)
 		},
 		methods: {
+		
+
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {

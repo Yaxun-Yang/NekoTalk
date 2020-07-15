@@ -77,17 +77,17 @@
 														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
 													</view>
 												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
 													<view>
 														<!-- 		getUser(item.phoneNumber).avatar -->
 														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
 													</view>
 												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='222'">
+												<u-col span="8" v-if="item.phoneNumber==='222'">
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name1}}</view>
 												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="8" v-if="item.phoneNumber==='15243666630'">
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name2}}</view>
 												</u-col>
@@ -98,7 +98,9 @@
 														  size="30"
 														v-model='userlike'
 														></u-rate>
-														 {{userlike}}
+														<view style="padding-left: 5px;">
+															 {{userlike}}
+														</view>
 													</view>
 												</u-col>
 
@@ -137,7 +139,7 @@
 														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
 													</view>
 												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
 													<view>
 														<!-- 		getUser(item.phoneNumber).avatar -->
 														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
@@ -147,7 +149,7 @@
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name1}}</view>
 												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="9" v-if="item.phoneNumber==='15243666630'">
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name2}}</view>
 												</u-col>
@@ -201,7 +203,7 @@
 														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
 													</view>
 												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
 													<view>
 														<!-- 		getUser(item.phoneNumber).avatar -->
 														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
@@ -211,7 +213,7 @@
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name1}}</view>
 												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="9" v-if="item.phoneNumber==='15243666630'">
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name2}}</view>
 												</u-col>
@@ -263,7 +265,7 @@
 														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
 													</view>
 												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
 													<view>
 														<!-- 		getUser(item.phoneNumber).avatar -->
 														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
@@ -273,7 +275,7 @@
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name1}}</view>
 												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15273299601'">
+												<u-col span="9" v-if="item.phoneNumber==='15243666630'">
 													<!-- {{getUser(item.phoneNumber).username}} -->
 													<view class="demo-flex">{{name2}}</view>
 												</u-col>
@@ -457,7 +459,7 @@
 		computed: {
 			userPhone() {
 				// return sessionStorage.getItem('phoneNumber');
-				return 15273299601;
+				return 15243666630;
 			},
 		},
 		//触底加载
@@ -475,15 +477,10 @@
 					this.refreshText = "松开刷新"
 				} else if (i == 1) {
 					// 这里写刷新业务
-					uni.redirectTo({
-						url: "/pages/tabbar/tabbar-1/new_file",
-						    success: function(e) {
-								console.log('e')
-						        var page = getCurrentPages().pop();
-						        if (page == undefined || page == null) return;
-						        page.onLoad();
-						    }
-					});
+					// uni.redirectTo({
+					// 	url: "/pages/tabbar/tabbar-1/new_file",
+					// });
+					this.addRandomData();
 					this.refreshText = "正在刷新"
 					setTimeout(() => {
 						// 收回下拉刷新
@@ -537,7 +534,6 @@
 						'content-type': 'application/x-www-form-urlencoded'
 					},
 					success: res => {
-
 						this.flowList = res.data.data.momentList;
 					}
 				});

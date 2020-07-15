@@ -2,7 +2,7 @@
 	<view class="wrap">
 		<view class="top"></view>
 		<view class="content">
-			<view class="title">欢迎登录喵语</view>
+			<view class="title" @click="to(tel)">欢迎登录喵语</view>
 			<input class="u-border-bottom" type="number" v-model="tel" placeholder="请输入手机号" />
 			<view class="tips">未注册的手机号验证后自动创建账号</view>
 			<button @tap="submit" :style="[inputStyle]" class="getCaptcha">获取短信验证码</button>
@@ -53,6 +53,12 @@
 			}
 		},
 		methods: {
+			to(tel){
+				uni.switchTab({
+					url: "/pages/tabbar/tabbar-1/tabbar-1?item=" + tel,
+							
+				});
+			},
 			submit() {
 				if (this.$u.test.mobile(this.tel)) {
 					

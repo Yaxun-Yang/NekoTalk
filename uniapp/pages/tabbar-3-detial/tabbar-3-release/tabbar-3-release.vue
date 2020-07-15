@@ -3,24 +3,25 @@
 		<!-- 提示 -->
 		<u-top-tips ref="uTips"></u-top-tips>
 		<!-- 表 -->
-		<u-form :model="model" :rules="rules" ref="uForm" errorType="message">
-			<u-form-item label-position="left" prop="photo" label-width="0">
-				<u-upload width="160"></u-upload>
+		<u-form :model="model" :rules="rules" ref="uForm" :errorType="['message']">
+			<u-form-item label-position="left" prop="pictureName" label-width="0">
+				<u-upload width="160" ></u-upload>
+			
 			</u-form-item>
 			<u-form-item label-position="left" prop="text" label-width="0">
-				<u-input type="textarea" border="false" placeholder="在这里输入想说的话" v-model="model.text" />
+				<u-input type="textarea" :border="false" placeholder="在这里输入想说的话" v-model="model.text" />
 			</u-form-item>
-			<u-form-item label-position="left" label="参与话题" prop="tag" label-width="150">
-				<u-input border="teue" placeholder="参与话题让更多人看到" v-model="model.tag" type="text"></u-input>
+			<u-form-item label-position="left" label="参与话题" prop="description" label-width="150">
+				<u-input :border="false" placeholder="参与话题让更多人看到" v-model="model.description" type="text"></u-input>
 			</u-form-item>
 			<u-form-item label-position="left" label="选择权限" prop="powerType" label-width="150">
-				<u-input border="false" type="select" :select-open="actionSheetShow" v-model="model.powerType" placeholder="选择动态权限"
+				<u-input :border="false" type="select" :select-open="actionSheetShow" v-model="model.powerType" placeholder="选择动态权限"
 				 @click="actionSheetShow = true"></u-input>
 			</u-form-item>
 			<u-form-item label-position="left" label="添加地点" prop="region" label-width="150">
-				<u-input border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="选择地点" @click="pickerShow = true"></u-input>
+				<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="选择地点" @click="pickerShow = true"></u-input>
 			</u-form-item>
-{{this.model.region}}
+			{{this.model.phoneNumber}}{{this.model.pictureName}}
 		</u-form>
 		<br><br><br><br><br><br><br>
 		<u-button @click="submit" type="error">发送</u-button>
@@ -37,15 +38,22 @@
 			return {
 				actionSheetShow: false,
 				pickerShow: false,
-				// 不知道怎么办
-				photo: '',
-				tag: '',
+				//
+				
+
+
 				//表
 				model: {
+					description: '',
 					text: '',
 					phoneNumber: '',
 					powerType: 1,
-					region: ''
+					region: '',
+					// base 64
+					picture: '',
+					//路径
+					pictureName: '',
+
 				},
 				rules: {
 					text: [{
@@ -53,8 +61,8 @@
 							message: '请填写简介'
 						},
 						{
-							min: 5,
-							message: '简介不能少于5个字',
+							min: 2,
+							message: '简介不能少于2个字',
 							trigger: 'change',
 						}
 					],
@@ -96,6 +104,9 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
+
+
+
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
@@ -107,15 +118,59 @@
 								'content-type': 'application/json'
 							},
 							success: res => {
-								console.log(res);
-								this.$refs.uTips.show({
-									title: '发送成功',
-									type: 'success',
-									duration: '1300'
-								})
-							}
-						});
-						console.log('验证通过');
+								var id = res.data.data.momentId
+								console.log('id' + id)
+								uni.request({
+									url: this.apiServer + '/moment/label',
+									method: 'POST',
+									data: this.model,
+									header: {
+										'content-type': 'application/json'
+									},
+									success: res => {
+
+										console.log(res)
+										console.log('iiiid ' + id)
+										uni.request({
+											url: this.apiServer + '/moment/labelInclude',
+											method: 'POST',
+											data: {
+												momentId: id,
+												description: this.model.description,
+											},
+											header: {
+												'content-type': 'application/json'
+											},
+											success: res => {
+												console.log('pic')
+												console.log(res)
+												uni.request({
+													url: this.apiServer + '/moment/momentPicture?momentId=' + id,
+													method: 'POST',
+													data: {
+														picture: this.picture,
+														pictureName: this.pictureName,
+													},
+													header: {
+														'content-type': 'application/json'
+													},
+													success: res => {
+														this.$refs.uTips.show({
+															title: '发送成功',
+															type: 'success',
+															duration: '1300'
+														})
+													}
+
+												})
+											}
+										})
+
+									}
+								});
+								console.log('验证通过');
+							},
+						})
 					} else {
 						console.log('验证失败');
 					}

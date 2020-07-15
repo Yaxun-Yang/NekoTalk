@@ -5,12 +5,12 @@
 			<u-row style="background-color: #FFFFFF;width: 100%;">
 				<u-col span="1.5" v-if="details.phoneNumber==='222'">
 					<view>
-						<u-avatar :src="avatar1" style="width:35px;height: 35px;"></u-avatar>
+						<u-avatar :src="avatar1"  style="width:35px;height: 35px;"></u-avatar>
 					</view>
 				</u-col>
-				<u-col span="1.5" v-if="details.phoneNumber==='15273299601'">
+				<u-col span="1.5" v-if="details.phoneNumber==='15243666630'">
 					<view>
-						<u-avatar :src="avatar2" style="width:35px;height: 35px;"></u-avatar>
+						<u-avatar :src="avatar2" style="width:35px;height: 35px;" @click="toUser(avatar2)"></u-avatar>
 					</view>
 				</u-col>
 				<u-col span="5" v-if="details.phoneNumber==='222'">
@@ -19,8 +19,8 @@
 					</view>
 					<view style="font-size: 10px;">{{details.address}}</view>
 				</u-col>
-				<u-col span="6" v-if="details.phoneNumber==='15273299601'">
-					<view class="username" v-if="details.phoneNumber==='15273299601'">
+				<u-col span="6" v-if="details.phoneNumber==='15243666630'">
+					<view class="username" v-if="details.phoneNumber==='15243666630'">
 						{{name2}}
 					</view>
 					<view style="font-size: 10px;">{{details.address}}</view>
@@ -133,6 +133,7 @@
 </template>
 
 <script>
+
 	export default {
 		data() {
 			return {
@@ -149,7 +150,7 @@
 				//         "replyCommentList": [],
 				//         "comment": {
 				//             "commentId": "2",
-				//             "phoneNumber": "15273299601",
+				//             "phoneNumber": "15243666630",
 				//             "momentId": "5",
 				//             "replyCommentId": "0",
 				//             "text": "this is a comment2",
@@ -212,10 +213,18 @@
 		computed: {
 			userPhone() {
 				// return sessionStorage.getItem('phoneNumber');
-				return 15273299601;
+				return 15243666630;
 			},
 		},
 		methods: {
+			toUser(e){
+				console.log('tp')
+				
+				uni.navigateTo({
+					
+					url: "/pages/tabbar/tabbar-1/user?phoneNumber=" + this.userPhone
+				})
+			},
 			getDetais(id) {
 				uni.request({
 					url: this.apiServer + '/moment/moment?momentId=' + id,
