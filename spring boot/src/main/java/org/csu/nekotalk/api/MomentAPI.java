@@ -78,6 +78,7 @@ public class MomentAPI {
     {
         Label label =  new Label();
         label.setDescription(req.getString("description"));
+        if(momentService.getLabelIdByLabelDescribe(label.getDescription()) == null)
         momentService.insertLabel(label);
 
         return ResponseTemplate.builder()
