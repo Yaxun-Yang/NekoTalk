@@ -130,16 +130,18 @@ public class MomentService {
         data.put("text", moment.getText());
         data.put("powerType", moment.getPowerType());
         data.put("momentTimeStamp", moment.getMomentTimeStamp());
-        if (moment.getOriginality().equals("Y")) {
-            OriginalityMoment originalityMoment = momentMapper.getOriginalityMomentByMomentId(momentId);
-            data.put("url",momentMapper.getFirstMomentPicture(momentId).getUrl());
-            data.put("pictureList", momentMapper.getMomentPictureListByMomentId(momentId));
-            data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(momentId));
-            data.put("address", originalityMoment.getAddress());
-        } else {
-            ForkMoment forkMoment = momentMapper.getForkMomentByMomentId(momentId);
-            data.put("forkFrom", forkMoment.getForkFrom());
+
+        String oMomentId = momentId;
+        if (moment.getOriginality().equals("N")) {
+           oMomentId = momentMapper.getForkMomentByMomentId(momentId).getForkFrom();
+            data.put("forkFrom", oMomentId);
+            data.put("forkPhoneNumber", momentMapper.getMomentByMomentId(oMomentId).getPhoneNumber());
+            data.put("forkText",momentMapper.getMomentByMomentId(oMomentId).getText());
         }
+        data.put("url",momentMapper.getFirstMomentPicture(oMomentId).getUrl());
+        data.put("pictureList", momentMapper.getMomentPictureListByMomentId(oMomentId));
+        data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(oMomentId));
+        data.put("address", momentMapper.getOriginalityMomentByMomentId(oMomentId).getAddress());
         return data;
     }
 

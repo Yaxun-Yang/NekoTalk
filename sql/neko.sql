@@ -1,7 +1,7 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : mySQL
+ Source Server         : mysql
  Source Server Type    : MySQL
  Source Server Version : 80017
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 15/07/2020 01:07:06
+ Date: 15/07/2020 05:23:08
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,17 @@ CREATE TABLE `comment`  (
   INDEX `phoneNumber`(`phoneNumber`) USING BTREE,
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `moment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+INSERT INTO `comment` VALUES (2, '15273299601', 6, '0', 'this is a comment', '2020-07-14 21:19:19.467000');
+INSERT INTO `comment` VALUES (3, '15273299601', 6, '2', 'this is a comment', '2020-07-14 21:19:49.231000');
+INSERT INTO `comment` VALUES (4, '15273299601', 6, '2', 'this is a comment', '2020-07-14 21:19:51.098000');
+INSERT INTO `comment` VALUES (5, '15273299601', 6, '2', 'this is a comment', '2020-07-14 21:19:52.294000');
+INSERT INTO `comment` VALUES (6, '15273299601', 6, '4', 'this is a comment', '2020-07-14 21:20:03.857000');
+INSERT INTO `comment` VALUES (7, '15273299601', 6, '3', 'this is a comment', '2020-07-14 21:20:10.737000');
 
 -- ----------------------------
 -- Table structure for favour
@@ -52,6 +62,9 @@ CREATE TABLE `favour`  (
 -- Records of favour
 -- ----------------------------
 INSERT INTO `favour` VALUES (5, '15273299601');
+INSERT INTO `favour` VALUES (6, '183-359-9357');
+INSERT INTO `favour` VALUES (16, '183-359-9357');
+INSERT INTO `favour` VALUES (18, '183-359-9357');
 
 -- ----------------------------
 -- Table structure for following
@@ -89,6 +102,10 @@ CREATE TABLE `forkmoment`  (
 -- Records of forkmoment
 -- ----------------------------
 INSERT INTO `forkmoment` VALUES (18, 6);
+INSERT INTO `forkmoment` VALUES (24, 6);
+INSERT INTO `forkmoment` VALUES (25, 6);
+INSERT INTO `forkmoment` VALUES (26, 6);
+INSERT INTO `forkmoment` VALUES (27, 6);
 
 -- ----------------------------
 -- Table structure for label
@@ -146,6 +163,15 @@ INSERT INTO `moment` VALUES (5, '15273299601', 'after update moment', 'Y', 1, '2
 INSERT INTO `moment` VALUES (6, '15273299601', 'this is a moment', 'Y', 1, '2020-07-13 18:43:40.442000');
 INSERT INTO `moment` VALUES (16, '15273299601', 'this is a moment', 'Y', 1, '2020-07-13 20:51:16.031000');
 INSERT INTO `moment` VALUES (18, '15273299601', 'this is a moment', 'N', 1, '2020-07-13 20:51:57.737000');
+INSERT INTO `moment` VALUES (19, '017-777-0420', 'this is a moment', 'Y', 3, '2020-07-14 21:12:19.880000');
+INSERT INTO `moment` VALUES (20, '183-359-9357', 'this is a moment', 'Y', 4, '2020-07-14 21:12:40.801000');
+INSERT INTO `moment` VALUES (21, '183-359-9357', 'this is a moment', 'Y', 1, '2020-07-14 21:12:54.936000');
+INSERT INTO `moment` VALUES (22, '183-359-9357', 'this is a moment', 'Y', 2, '2020-07-14 21:13:01.985000');
+INSERT INTO `moment` VALUES (23, '183-359-9357', 'this is a moment', 'Y', 3, '2020-07-14 21:13:06.500000');
+INSERT INTO `moment` VALUES (24, '183-359-9357', 'this is a moment', 'N', 1, '2020-07-14 21:13:44.687000');
+INSERT INTO `moment` VALUES (25, '183-359-9357', 'this is a moment', 'N', 1, '2020-07-14 21:13:51.512000');
+INSERT INTO `moment` VALUES (26, '183-359-9357', 'this is a moment', 'N', 1, '2020-07-14 21:13:52.991000');
+INSERT INTO `moment` VALUES (27, '183-359-9357', 'this is a moment', 'N', 1, '2020-07-14 21:13:54.248000');
 
 -- ----------------------------
 -- Table structure for momentpicture
@@ -158,15 +184,18 @@ CREATE TABLE `momentpicture`  (
   PRIMARY KEY (`pictureId`) USING BTREE,
   INDEX `momentId`(`momentId`) USING BTREE,
   CONSTRAINT `momentpicture_ibfk_1` FOREIGN KEY (`momentId`) REFERENCES `originalitymoment` (`momentId`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of momentpicture
 -- ----------------------------
-INSERT INTO `momentpicture` VALUES (4, 'momentPicture4.jpg', 5);
-INSERT INTO `momentpicture` VALUES (5, 'momentPicture5.jpg', 5);
-INSERT INTO `momentpicture` VALUES (6, 'momentPicture6.jpg', 5);
-INSERT INTO `momentpicture` VALUES (8, 'http://qdeujgrtl.bkt.clouddn.com/momentPicture8.jpg', 5);
+INSERT INTO `momentpicture` VALUES (4, 'http://qdeujgrtl.bkt.clouddn.com/04.jpg', 5);
+INSERT INTO `momentpicture` VALUES (5, 'http://qdeujgrtl.bkt.clouddn.com/05.jpg', 5);
+INSERT INTO `momentpicture` VALUES (6, 'http://qdeujgrtl.bkt.clouddn.com/06.jpg', 5);
+INSERT INTO `momentpicture` VALUES (8, 'http://qdeujgrtl.bkt.clouddn.com/08.jpg', 5);
+INSERT INTO `momentpicture` VALUES (9, 'http://qdeujgrtl.bkt.clouddn.com/09.jpg', 5);
+INSERT INTO `momentpicture` VALUES (10, 'http://qdeujgrtl.bkt.clouddn.com/10.jpg', 6);
+INSERT INTO `momentpicture` VALUES (11, 'http://qdeujgrtl.bkt.clouddn.com/11.jpg', 6);
 
 -- ----------------------------
 -- Table structure for originalitymoment
@@ -185,6 +214,11 @@ CREATE TABLE `originalitymoment`  (
 INSERT INTO `originalitymoment` VALUES (5, '北京市中南海');
 INSERT INTO `originalitymoment` VALUES (6, '北京市中南海');
 INSERT INTO `originalitymoment` VALUES (16, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (19, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (20, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (21, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (22, '北京市中南海');
+INSERT INTO `originalitymoment` VALUES (23, '北京市中南海');
 
 -- ----------------------------
 -- Table structure for powerusers
@@ -200,6 +234,14 @@ CREATE TABLE `powerusers`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of powerusers
+-- ----------------------------
+INSERT INTO `powerusers` VALUES (19, '183-359-9357');
+INSERT INTO `powerusers` VALUES (20, '183-359-9357');
+INSERT INTO `powerusers` VALUES (23, '183-359-9357');
+INSERT INTO `powerusers` VALUES (23, '448-320-1397');
+
+-- ----------------------------
 -- Table structure for session
 -- ----------------------------
 DROP TABLE IF EXISTS `session`;
@@ -208,7 +250,7 @@ CREATE TABLE `session`  (
   `more` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `createTimeStamp` timestamp(0) NOT NULL,
   PRIMARY KEY (`sessionId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of session
@@ -251,7 +293,7 @@ CREATE TABLE `sessionmessage`  (
   INDEX `sessionmessage2`(`phoneNumber`) USING BTREE,
   CONSTRAINT `sessionmessage1` FOREIGN KEY (`sessionId`) REFERENCES `session` (`sessionId`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `sessionmessage2` FOREIGN KEY (`phoneNumber`) REFERENCES `users` (`phoneNumber`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sessionmessage
@@ -279,8 +321,12 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
+INSERT INTO `users` VALUES ('017-777-0420', 'zhenzhen', '698d51a19d8a12', 'http://qdeujgrtl.bkt.clouddn.com/avatar017-777-0420.jpg', ' female', 'sign ', '湖南省湘潭市');
 INSERT INTO `users` VALUES ('15273299601', 'han', '111', NULL, NULL, NULL, NULL);
-INSERT INTO `users` VALUES ('18307331878', 'zhenzhen', '111', 'momentPicture18307331878.jpg', ' female', 'sign ', '湖南省湘潭市');
+INSERT INTO `users` VALUES ('183-359-9357', 'zhenzhen', '698d51a19d8a12', 'http://qdeujgrtl.bkt.clouddn.com/avatar183-359-9357.jpg', ' female', 'sign ', '湖南省湘潭市');
+INSERT INTO `users` VALUES ('18307331878', 'zhenzhen', '111', 'http://qdeujgrtl.bkt.clouddn.com/avatar18307331878.jpg', ' female', 'sign ', '湖南省湘潭市');
 INSERT INTO `users` VALUES ('222', 'chen', '222', NULL, NULL, NULL, NULL);
+INSERT INTO `users` VALUES ('448-320-1397', 'zhenzhen', '698d51a19d8a12', 'http://qdeujgrtl.bkt.clouddn.com/avatar448-320-1397.jpg', ' female', 'sign ', '湖南省湘潭市');
+INSERT INTO `users` VALUES ('930-498-4346', 'zhenzhen', '698d51a19d8a12', 'http://qdeujgrtl.bkt.clouddn.com/avatar930-498-4346.jpg', ' female', 'sign ', '湖南省湘潭市');
 
 SET FOREIGN_KEY_CHECKS = 1;
