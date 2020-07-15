@@ -324,4 +324,14 @@ public class MomentAPI {
                 .build();
     }
 
+    @GetMapping("/test")
+    public ResponseTemplate test(@RequestParam JSONObject req)
+    {
+        return ResponseTemplate.builder()
+                .status(200)
+                .statusText("OK")
+                .data(req)
+                .build();
+    }
+
 }
