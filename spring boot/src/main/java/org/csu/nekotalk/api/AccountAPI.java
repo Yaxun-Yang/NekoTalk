@@ -7,10 +7,7 @@ import org.csu.nekotalk.annotation.label.UserLoginToken;
 import org.csu.nekotalk.domain.Following;
 import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
-import org.csu.nekotalk.service.AccountService;
-import org.csu.nekotalk.service.MD5Service;
-import org.csu.nekotalk.service.TokenService;
-import org.csu.nekotalk.service.PictureService;
+import org.csu.nekotalk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
@@ -62,7 +59,6 @@ public class AccountAPI {
     public ResponseTemplate login(@RequestBody  JSONObject req, HttpServletRequest httpServletRequest)
     {
         String phoneNumber = req.getString("phoneNumber");
-        String password =MD5Service.getMD5(req.getString("password"));
         String verifyCode = req.getString("verifyCode");
         JSONObject data=new JSONObject();
         HttpSession session=  httpServletRequest.getSession();
@@ -74,28 +70,20 @@ public class AccountAPI {
         String statusText = "";
         if(verifyCode.equals(code))
         {
-            Users user = accountService.getUserByPhoneNumberAndPassword(phoneNumber,password);
-            if(user != null)
-            {
-                String token = TokenService.getToken(phoneNumber, password);
-
-                data.put("user", user);
-                data.put("token", token);
-
-                status = 206;
-                statusText = "用户登录成功";
-
-            }
-            else
-            {
-                status = 423;
-                statusText = "用户名或密码错误";
-
-            }
+           if(accountService.getUserByPhoneNumber(phoneNumber) != null)
+           {
+               statusText="OK";
+           }
+           else
+           {
+               status = 423;
+               statusText="手机号未注册";
+           }
         }
-        else {
-            status =424 ;
-            statusText ="验证码错误" ;
+        else
+        {
+            status = 424;
+            statusText="验证码错误";
         }
 
         return ResponseTemplate.builder()
@@ -113,10 +101,10 @@ public class AccountAPI {
         String phoneNumber = req.getString("phoneNumber");
 
         //此处仅为模拟短信发送
-        String code = "188234";
-        System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
+       // String code = "188234";
+      //  System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
         //此处为真实的短信发送
-        //String code= SmsService.sendSms(phoneNumber);
+        String code= SmsService.sendSms(phoneNumber);
 
         httpServletRequest.getSession().setAttribute("code",code);
         return ResponseTemplate.builder()

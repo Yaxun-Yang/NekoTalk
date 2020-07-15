@@ -78,6 +78,7 @@ public class MomentAPI {
     {
         Label label =  new Label();
         label.setDescription(req.getString("description"));
+        if(momentService.getLabelIdByLabelDescribe(label.getDescription()) == null)
         momentService.insertLabel(label);
 
         return ResponseTemplate.builder()
@@ -320,6 +321,18 @@ public class MomentAPI {
                 .status(200)
                 .statusText("OK")
                 .data(data)
+                .build();
+    }
+
+    @PostMapping("/test")
+    public ResponseTemplate test(@RequestBody JSONObject req)
+    {
+       System.out.println( req.toJSONString());
+
+        return ResponseTemplate.builder()
+                .status(200)
+                .statusText("OK")
+                .data(req)
                 .build();
     }
 
