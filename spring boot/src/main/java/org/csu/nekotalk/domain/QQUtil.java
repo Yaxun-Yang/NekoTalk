@@ -1,14 +1,17 @@
 package org.csu.nekotalk.domain;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import java.io.IOException;
+import java.net.URLEncoder;
+
 import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URLEncoder;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
+
 
 
 public class QQUtil {
@@ -80,7 +83,7 @@ public class QQUtil {
         QQAccessToken token = new QQAccessToken();
         String url = ACCESS_TOKEN_URL.replace("CODE", code).replace("REDIRECT_URI", URLEncoder.encode(LOGIN_REDIRECT_URI, "utf-8"));
         log.info("这是请求路径："+url);
-        String result = HttpClientUtils.doGet(url);
+        String result = HttpClientUtils.httpGet(url).toString();
         JSONObject jsonObject=getJsonStrByQueryUrl(result);
         log.info("这是返回结果："+jsonObject);
         if(jsonObject!=null){ //如果返回不为空，将返回结果封装进AccessToken实体类
@@ -99,7 +102,7 @@ public class QQUtil {
         QQAccessToken token = new QQAccessToken();
         String url = ACCESS_TOKEN_URL.replace("CODE", code).replace("REDIRECT_URI", URLEncoder.encode(BIND_REDIRECT_URI, "utf-8"));
         log.info("这是请求路径："+url);
-        String result = HttpClientUtils.doGet(url);
+        String result = HttpClientUtils.httpGet(url).toString();
         JSONObject jsonObject=getJsonStrByQueryUrl(result);
         log.info("这是返回结果："+jsonObject);
         if(jsonObject!=null){ //如果返回不为空，将返回结果封装进AccessToken实体类
@@ -118,7 +121,7 @@ public class QQUtil {
         QQAccessToken token = new QQAccessToken();
         String url = REFRESH_TOKEN_URL.replace("REFRESH_TOKEN",refreshToken);
         log.info("这是请求路径："+url);
-        String result = HttpClientUtils.doGet(url);
+        String result = HttpClientUtils.httpGet(url).toString();
         log.info("这是返回结果："+result);
         JSONObject jsonObject=getJsonStrByQueryUrl(result);
         log.info("这是转为json的结果："+jsonObject);
@@ -136,7 +139,7 @@ public class QQUtil {
     public static String getQQOpenId(String accessToken) throws ClientProtocolException, IOException{
         String url = OPEN_ID_URL.replace("ACCESS_TOKEN",accessToken);
         log.info("这是请求路径："+url);
-        String result = HttpClientUtils.doGet(url).replace("callback(", "").replace(");", "");
+        String result = HttpClientUtils.httpGet(url).toString().replace("callback(", "").replace(");", "");
         log.info("这是返回结果："+result);
         JSONObject jsonObject=JSON.parseObject(result);
         log.info("这是转为json的结果："+jsonObject);
@@ -157,18 +160,18 @@ public class QQUtil {
         // 拼接请求地址
         String url = USER_INFO_URL.replace("ACCESS_TOKEN", accessToken).replace("OPENID", openId);
         log.info("这是请求路径："+url);
-        String result = HttpClientUtils.doGet(url);
+        String result = HttpClientUtils.httpGet(url).toString();
         log.info("这是返回结果："+result);
         JSONObject jsonObject=JSONObject.parseObject(result);
         log.info("这是转为json的结果："+jsonObject);
         JSONObject json=new JSONObject();
         if (jsonObject!=null&&jsonObject.getInteger("ret").equals(0)) {
             try {
-                User user= new User();
+                Users user= new Users();
                 // 用户的标识
-                user.setQqId(openId);
+                user.setSign(openId);
                 // 昵称
-                user.setNickname(jsonObject.getString("nickname"));
+                user.setUsername(jsonObject.getString("username"));
                 if(jsonObject.getString("figureurl_2")!=null&&!jsonObject.getString("figureurl_2").isEmpty()) {
                     // 用户头像
                     user.setAvatar(jsonObject.getString("figureurl_qq_2"));
