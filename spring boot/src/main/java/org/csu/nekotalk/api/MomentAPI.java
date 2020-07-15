@@ -31,19 +31,17 @@ public class MomentAPI {
         moment.setMomentTimeStamp(new Timestamp(System.currentTimeMillis()));
 
         OriginalityMoment originalityMoment = new OriginalityMoment();
-        if (req.getString("address") != null)
-        {
-            originalityMoment.setAddress(req.getString("address"));
-        }
-        else
-        {
-            originalityMoment.setAddress("don't show");
-        }
+        originalityMoment.setAddress(req.getString("address"));
+
 
         momentService.insertOriginalityMoment(moment,originalityMoment);
 
+        JSONObject data = new JSONObject();
+        data.put("momentId", momentService.getRecentMomentId(req.getString("phoneNumber")));
+
         return ResponseTemplate.builder()
                 .status(200)
+                .data(data)
                 .statusText("OK")
                 .build();
     }

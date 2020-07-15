@@ -138,6 +138,7 @@ public class MomentService {
             data.put("forkPhoneNumber", momentMapper.getMomentByMomentId(oMomentId).getPhoneNumber());
             data.put("forkText",momentMapper.getMomentByMomentId(oMomentId).getText());
         }
+        if(momentMapper.getFirstMomentPicture(oMomentId) != null)
         data.put("url",momentMapper.getFirstMomentPicture(oMomentId).getUrl());
         data.put("pictureList", momentMapper.getMomentPictureListByMomentId(oMomentId));
         data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(oMomentId));
