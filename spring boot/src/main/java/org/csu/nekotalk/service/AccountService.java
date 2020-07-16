@@ -1,6 +1,9 @@
 package org.csu.nekotalk.service;
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.catalina.User;
 import org.csu.nekotalk.domain.Following;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.persistence.AccountMapper;
@@ -18,6 +21,9 @@ public class AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private MomentService momentService;
 
 
 
@@ -57,12 +63,16 @@ public class AccountService {
     }
 
     //获取关注列表
-    public List<Users> getFollowingList(String userPhoneNumber){
+    public JSONArray getFollowingList(String userPhoneNumber){
         List<String> followingPhoneNumberList= accountMapper.getFollowingList(userPhoneNumber);
-        List<Users> followingList=new ArrayList<Users>();
+        JSONArray followingList = new JSONArray();
         for(int i=0; i<followingPhoneNumberList.size(); i++)
         {
-            followingList.add(accountMapper.getUserByPhoneNumber(followingPhoneNumberList.get(i)));
+            JSONObject followingOne = new JSONObject();
+            Users users = accountMapper.getUserByPhoneNumber(followingPhoneNumberList.get(i));
+            followingOne.put("user",users);
+            followingOne.put("momentList",momentService.getMomentShowListByPhoneNumber(users.getPhoneNumber()));
+            followingList.add(followingOne);
         }
         return followingList;
 
