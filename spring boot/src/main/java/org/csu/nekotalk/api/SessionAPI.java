@@ -9,6 +9,7 @@ import org.csu.nekotalk.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -57,14 +58,14 @@ public class SessionAPI {
         sessionMessage.setSessionTimeStamp(new Timestamp(System.currentTimeMillis()));
         sessionService.insertSessionMessage(sessionMessage);
 
-        if(req.getString("sessionPicture") != null)
+        if(req.get("sessionPicture") != null)
         {
             String key = "message"+sessionService.getRecentMessageId(sessionMessage.getSessionId());
-            String base64Picture = req.getString("sessionPicture");
-            String pictureName = req.getString("sessionPictureName");
+            String pictureName = req.getJSONObject("sessionPicture").getJSONObject("response").getString("data");
             String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
             key+=fileType;
-            PictureService.uploadImage(base64Picture, key);
+            File file = new File(pictureName);
+            PictureService.uploadImage(file, key);
             sessionMessage.setPicture(PictureService.domain+key);
             sessionService.updateSessionMessage(sessionMessage);
         }
