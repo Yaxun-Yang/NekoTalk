@@ -143,7 +143,7 @@ public class SessionAPI {
     }
 
     @PostMapping("/return")
-    public ResponseTemplate justReturn(@RequestParam JSONObject req)
+    public ResponseTemplate justReturn(@RequestBody JSONObject req)
     {
         req .put("time", new Timestamp(System.currentTimeMillis()));
 
