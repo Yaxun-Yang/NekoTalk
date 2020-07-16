@@ -11,6 +11,7 @@ import com.qiniu.util.StringMap;
 import sun.misc.BASE64Decoder;
 
 import java.io.*;
+import java.util.Base64;
 
 public class PictureService {
 
@@ -29,9 +30,28 @@ public class PictureService {
     }
 
     //上传
-    public static void uploadImage(String base64File, String key)  {
+    public static void uploadImage(File file, String key)  {
 
         try {
+
+            String base64File = null;
+            InputStream in = null;
+            try {
+                in = new FileInputStream(file);
+                byte[] bytes = new byte[in.available()];
+                base64File = Base64.getEncoder().encodeToString(bytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
 
             BASE64Decoder decoder = new BASE64Decoder();
             // Base64解码,对字节数组字符串进行Base64解码并生成文件
@@ -57,7 +77,7 @@ public class PictureService {
                 Configuration configuration = new Configuration(Region.autoRegion());
                 UploadManager uploadManager = new UploadManager(configuration);
 
-                File file= new File("tempFile");
+                File afile= new File("tempFile");
                 //允许上传覆盖
                 uploadManager.put(file, key, auth.uploadToken(bucketName, key, 3600, new StringMap().put("insertOnly", 0)));
             }

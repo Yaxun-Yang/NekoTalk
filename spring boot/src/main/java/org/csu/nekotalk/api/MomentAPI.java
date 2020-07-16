@@ -2,6 +2,7 @@ package org.csu.nekotalk.api;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.csu.nekotalk.domain.*;
 import org.csu.nekotalk.service.MomentService;
@@ -9,9 +10,14 @@ import org.csu.nekotalk.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/moment")
@@ -50,22 +56,30 @@ public class MomentAPI {
     @Transactional
     public ResponseTemplate insertMomentPicture(@RequestParam String momentId, @RequestBody JSONObject req)
     {
-        MomentPicture momentPicture = new MomentPicture();
-        momentPicture.setMomentId(momentId);
-        momentPicture.setUrl("temp");
-        momentService.insertMomentPicture(momentPicture);
 
-        String key = "momentPicture"+momentService.getRecentPictureId(momentId);
-        String base64Picture = req.getString("picture");
-        String pictureName = req.getString("pictureName");
-        String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
-        key+=fileType;
-        PictureService.uploadImage(base64Picture, key);
+        String pictureList = req.getString("pictureList");
+        pictureList=pictureList.substring(pictureList.indexOf("[")+1,pictureList.indexOf("]"));
+        String [] data = pictureList.split(",");
 
-        momentPicture.setPictureId(momentService.getRecentPictureId(momentId));
-        momentPicture.setUrl(PictureService.domain+key);
-        momentService.updateMomentPicture(momentPicture);
+        System.out.println(pictureList);
+        for(int i=0;i<data.length;i++)
+        {
+            MomentPicture momentPicture = new MomentPicture();
+            momentPicture.setMomentId(momentId);
+            momentPicture.setUrl("temp");
+            momentService.insertMomentPicture(momentPicture);
+            String key = "momentPicture"+momentService.getRecentPictureId(momentId);
 
+
+            String pictureName = data[i];
+            String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
+            key+=fileType;
+            File file = new File(pictureName);
+            PictureService.uploadImage(file, key);
+            momentPicture.setPictureId(momentService.getRecentPictureId(momentId));
+            momentPicture.setUrl(PictureService.domain+key);
+            momentService.updateMomentPicture(momentPicture);
+        }
 
         return ResponseTemplate.builder()
                 .status(200)
@@ -325,15 +339,19 @@ public class MomentAPI {
     }
 
     @PostMapping("/test")
-    public ResponseTemplate test(@RequestBody JSONObject req)
+    public String test(@RequestParam MultipartFile file )throws Exception
     {
-       System.out.println( req.toJSONString());
 
-        return ResponseTemplate.builder()
-                .status(200)
-                .statusText("OK")
-                .data(req)
-                .build();
+       File temp = new File(new File("/Temp").getAbsolutePath()+"\\"+file.getOriginalFilename());
+       System.out.println(temp.getAbsolutePath());
+       if(!temp.exists())
+       {
+           temp.createNewFile();
+       }
+       file.transferTo(temp);
+
+        return temp.getAbsolutePath();
+
     }
 
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.qiniu.common.QiniuException;
 import org.csu.nekotalk.annotation.label.UserLoginToken;
 import org.csu.nekotalk.domain.Following;
+import org.csu.nekotalk.domain.MomentPicture;
 import org.csu.nekotalk.domain.ResponseTemplate;
 import org.csu.nekotalk.domain.Users;
 import org.csu.nekotalk.service.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 
 //import org.csu.nekotalk.annotation.label.UserLoginToken;
 
@@ -34,13 +36,12 @@ public class AccountAPI {
         user.setPassword(MD5Service.getMD5(req.getString("password")));
 
         String key = "avatar"+user.getPhoneNumber();
-        String base64Picture = req.getString("avatarPicture");
-        String pictureName = req.getString("avatarPictureName");
+        String pictureName = req.getJSONObject("avatar").getJSONObject("response").getString("data");
         String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
         key+=fileType;
-        PictureService.uploadImage(base64Picture, key);
+        File file = new File(pictureName);
+        PictureService.uploadImage(file, key);
         user.setAvatar(PictureService.domain+key);
-
 
         user.setSex(req.getString("sex"));
         user.setSign(req.getString("sign"));
@@ -102,10 +103,10 @@ public class AccountAPI {
 
         //此处仅为模拟短信发送
        // String code = "188234";
-      //  System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
+
         //此处为真实的短信发送
         String code= SmsService.sendSms(phoneNumber);
-
+        System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
         httpServletRequest.getSession().setAttribute("code",code);
         return ResponseTemplate.builder()
                 .status(200)
@@ -186,18 +187,19 @@ public class AccountAPI {
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
         user.setPassword(req.getString("password"));
-        if(req.getString("avatar") != null)
+        if(req.get("avatar") == null)
         {
             user.setAvatar(req.getString("avatar"));
         }
         else
         {
             String key = "avatar"+user.getPhoneNumber();
-            String base64Picture = req.getString("avatarPicture");
-            String pictureName = req.getString("avatarPictureName");
+            String pictureName = req.getJSONObject("avatar").getJSONObject("response").getString("data");
             String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
             key+=fileType;
-            PictureService.uploadImage(base64Picture, key);
+            File file = new File(pictureName);
+            PictureService.uploadImage(file, key);
+
             user.setAvatar(PictureService.domain+key);
         }
 
