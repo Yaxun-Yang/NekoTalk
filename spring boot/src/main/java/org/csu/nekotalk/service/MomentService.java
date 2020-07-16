@@ -56,54 +56,45 @@ public class MomentService {
         momentMapper.insertComment(comment);
     }
 
-    public void insertPowerUser(PowerUsers powerUsers)
-    {
+    public void insertPowerUser(PowerUsers powerUsers) {
         momentMapper.insertPower(powerUsers);
     }
 
     @Transactional
     public void deleteMoment(String momentId) {
 
-       momentMapper.deleteAllComments(momentId);
-       momentMapper.deleteMomentPicture(momentId);
-       momentMapper.deleteMomentLabelInclude(momentId);
-       momentMapper.deleteMomentPower(momentId);
-        if(momentMapper.getMomentByMomentId(momentId).getOriginality().equals("Y"))
-        {
+        momentMapper.deleteAllComments(momentId);
+        momentMapper.deleteMomentPicture(momentId);
+        momentMapper.deleteMomentLabelInclude(momentId);
+        momentMapper.deleteMomentPower(momentId);
+        if (momentMapper.getMomentByMomentId(momentId).getOriginality().equals("Y")) {
             momentMapper.deleteOriginalityMoment(momentId);
-        }
-        else
-        {
+        } else {
             momentMapper.deleteFork(momentId);
         }
         momentMapper.deleteMoment(momentId);
     }
 
 
-    public void deleteFavour(String phoneNumber, String momentId)
-    {
+    public void deleteFavour(String phoneNumber, String momentId) {
         momentMapper.deleteFavour(phoneNumber, momentId);
     }
 
     @Transactional
-    public void deleteComment(String commentId)
-    {
+    public void deleteComment(String commentId) {
         momentMapper.deleteReplyComment(commentId);
         momentMapper.deleteComment(commentId);
     }
 
-    public void updateMoment(Moment moment)
-    {
+    public void updateMoment(Moment moment) {
         momentMapper.updateMoment(moment);
     }
 
-    public void updateComment(Comment comment)
-    {
+    public void updateComment(Comment comment) {
         momentMapper.updateComment(comment);
     }
 
-    public void updateMomentPicture(MomentPicture momentPicture)
-    {
+    public void updateMomentPicture(MomentPicture momentPicture) {
         momentMapper.updateMomentPicture(momentPicture);
     }
 
@@ -111,13 +102,11 @@ public class MomentService {
         return momentMapper.getRecentMomentId(phoneNumber);
     }
 
-    public String getRecentPictureId(String momentId)
-    {
-        return  momentMapper.getRecentMomentPictureId(momentId);
+    public String getRecentPictureId(String momentId) {
+        return momentMapper.getRecentMomentPictureId(momentId);
     }
 
-    public Moment getMomentByMomentId(String momentId)
-    {
+    public Moment getMomentByMomentId(String momentId) {
         return momentMapper.getMomentByMomentId(momentId);
     }
 
@@ -125,9 +114,9 @@ public class MomentService {
         JSONObject data = new JSONObject();
         Moment moment = momentMapper.getMomentByMomentId(momentId);
         Users users = accountMapper.getUserByPhoneNumber(moment.getPhoneNumber());
-        data.put("username",users.getUsername());
-        data.put("avatar",users.getAvatar());
-        data.put("follow",accountMapper.ifFollowing(new Following(phoneNumber, moment.getPhoneNumber()))!= null?"Y":"N");
+        data.put("username", users.getUsername());
+        data.put("avatar", users.getAvatar());
+        data.put("follow", accountMapper.ifFollowing(new Following(phoneNumber, moment.getPhoneNumber())) != null ? "Y" : "N");
 
         data.put("momentId", momentId);
         data.put("phoneNumber", moment.getPhoneNumber());
@@ -138,21 +127,20 @@ public class MomentService {
 
         String oMomentId = momentId;
         if (moment.getOriginality().equals("N")) {
-           oMomentId = momentMapper.getForkMomentByMomentId(momentId).getForkFrom();
+            oMomentId = momentMapper.getForkMomentByMomentId(momentId).getForkFrom();
             data.put("forkFrom", oMomentId);
             data.put("forkPhoneNumber", momentMapper.getMomentByMomentId(oMomentId).getPhoneNumber());
-            data.put("forkText",momentMapper.getMomentByMomentId(oMomentId).getText());
+            data.put("forkText", momentMapper.getMomentByMomentId(oMomentId).getText());
         }
-        if(momentMapper.getFirstMomentPicture(oMomentId) != null)
-        data.put("url",momentMapper.getFirstMomentPicture(oMomentId).getUrl());
+        if (momentMapper.getFirstMomentPicture(oMomentId) != null)
+            data.put("url", momentMapper.getFirstMomentPicture(oMomentId).getUrl());
         data.put("pictureList", momentMapper.getMomentPictureListByMomentId(oMomentId));
         data.put("labelDescription", momentMapper.getLabelDescriptionByMomentId(oMomentId));
         data.put("address", momentMapper.getOriginalityMomentByMomentId(oMomentId).getAddress());
         return data;
     }
 
-    public Comment getCommentByCommentId(String commentId)
-    {
+    public Comment getCommentByCommentId(String commentId) {
         return momentMapper.getCommentByCommentId(commentId);
     }
 
@@ -165,18 +153,18 @@ public class MomentService {
         List<String> momentIdList = momentMapper.getMomentIdByPhoneNumber(phoneNumber);
         JSONArray data = new JSONArray();
         for (int i = 0; i < momentIdList.size(); i++) {
-            data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
+            data.add(getMomentShowByMomentId(momentIdList.get(i), phoneNumber));
         }
         return data;
     }
 
-    public JSONArray gerMomentShowListByLabelId(String labelId ,String  phoneNumber) {
+    public JSONArray gerMomentShowListByLabelId(String labelId, String phoneNumber) {
         List<String> momentIdList = momentMapper.getMomentIdByLabel(labelId);
         JSONArray data = new JSONArray();
         for (int i = 0; i < momentIdList.size(); i++) {
 
-            if(powerJudge(momentIdList.get(i),phoneNumber))
-            data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
+            if (powerJudge(momentIdList.get(i), phoneNumber))
+                data.add(getMomentShowByMomentId(momentIdList.get(i), phoneNumber));
         }
         return data;
 
@@ -189,34 +177,40 @@ public class MomentService {
         JSONArray data = new JSONArray();
         for (int i = 0; i < momentIdList.size(); i++) {
             if (powerJudge(momentIdList.get(i), phoneNumber))
-                data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
+                data.add(getMomentShowByMomentId(momentIdList.get(i), phoneNumber));
         }
 
-            return data;
-        }
+        return data;
+    }
 
-    public JSONArray getMomentShowListByFavour (String phoneNumber)
+    public JSONArray getMomentShowListByFavour(String phoneNumber) {
+        List<String> momentIdList = momentMapper.getMomentIdListByFavour(phoneNumber);
+        JSONArray data = new JSONArray();
+        for (int i = 0; i < momentIdList.size(); i++) {
+
+            if (powerJudge(momentIdList.get(i), phoneNumber))
+                data.add(getMomentShowByMomentId(momentIdList.get(i), phoneNumber));
+        }
+        return data;
+    }
+
+    public JSONArray getMomentShowList(String phoneNumber) {
+        List<String> momentIdList = momentMapper.getMomentIdList();
+        JSONArray data = new JSONArray();
+        for (int i = 0; i < momentIdList.size(); i++) {
+            if (powerJudge(momentIdList.get(i), phoneNumber))
+                data.add(getMomentShowByMomentId(momentIdList.get(i), phoneNumber));
+        }
+        return data;
+    }
+
+    public JSONObject getCommentShow(Comment comment)
     {
-            List<String> momentIdList = momentMapper.getMomentIdListByFavour(phoneNumber);
-            JSONArray data = new JSONArray();
-            for (int i = 0; i < momentIdList.size(); i++) {
-
-                if (powerJudge(momentIdList.get(i), phoneNumber))
-                    data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
-            }
-            return data;
-        }
-
-    public JSONArray getMomentShowList (String phoneNumber)
-    {
-            List<String> momentIdList = momentMapper.getMomentIdList();
-            JSONArray data = new JSONArray();
-            for (int i = 0; i < momentIdList.size(); i++) {
-                if(powerJudge(momentIdList.get(i),phoneNumber))
-                data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
-            }
-            return data;
-        }
+        JSONObject data = new JSONObject();
+        data.put("comment",comment);
+        data.put("user",accountMapper.getUserByPhoneNumber(comment.getPhoneNumber()));
+        return data;
+    }
 
     public JSONArray getCommentList(String momentId)
     {
@@ -225,8 +219,15 @@ public class MomentService {
         for(int i=0; i<commentList.size(); i++)
         {
             JSONObject momentComment = new JSONObject();
-            momentComment.put("comment", commentList.get(i));
-            momentComment.put("replyCommentList", momentMapper.getReplyCommentList(commentList.get(i).getCommentId()));
+            momentComment.put("commentShow",getCommentShow(commentList.get(i)));
+
+            JSONArray replyCommentList = new JSONArray();
+            List<Comment> replyComments = momentMapper.getReplyCommentList(commentList.get(i).getCommentId());
+            for(int j=0;j<replyComments.size();j++)
+            {
+                replyCommentList.add(getCommentShow(replyComments.get(j)));
+            }
+            momentComment.put("replyCommentList", replyCommentList);
             data.add(momentComment);
         }
         return data;
