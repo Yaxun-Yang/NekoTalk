@@ -1,25 +1,25 @@
 <template>
-	<view>
+	<view style="background-color: #FFFFFF;">
 		<!-- 上面仨 -->
 		<view class="three">
 			<u-row justify="around">
-				<u-col span="4">
+				<u-col span="4" style="background-color: #FFFFFF;">
 					<view class="demo-layout bg-purple">
-						<u-badge type="error" count="4" :offset="[-10,550]"></u-badge>
+						<u-badge type="error" count="4" :offset="[24,550]"></u-badge>
 						<u-icon name="heart-fill" color="#ffffff" size="50" style="padding-left: 8px;padding-top: 7px;" @click="starTo"></u-icon>
 						<br><br>新点赞
 					</view>
 				</u-col>
 				<u-col span="4">
 					<view class="demo-layout bg-purple-light">
-						<u-badge type="error" count="2" :offset="[-10,330]"></u-badge>
+						<u-badge type="error" count="2" :offset="[24,330]"></u-badge>
 						<u-icon name="account-fill" color="#ffffff" size="50" style="padding-left: 8px;padding-top: 7px;" @click="fansTo"></u-icon>
 						<br><br>新粉丝
 					</view>
 				</u-col>
 				<u-col span="4">
 					<view class="demo-layout bg-purple-dark">
-						<u-badge type="error" count="2" :offset="[-10,120]"></u-badge>
+						<u-badge type="error" count="2" :offset="[24,120]"></u-badge>
 						<u-icon name="chat" color="#ffffff" size="50" style="padding-left: 8px;padding-top: 7px;" @click="comTo"></u-icon>
 						<br><br>新评论
 					</view>
@@ -122,6 +122,7 @@
 <style lang="scss" scoped>
 	.three {
 		padding-left: 50px;
+		background-color: #FFFFFF;
 
 	}
 
@@ -135,6 +136,7 @@
 		border-radius: 8rpx;
 		font-size: 13px;
 		font-weight: bold;
+		color: #000000;
 	}
 
 	.bg-purple {

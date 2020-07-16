@@ -63,7 +63,12 @@
 			return {
 				value: '',
 				tableData: [],
-				list: [],
+				list: [
+					{
+						ss:'111',
+						con:'222'
+					}
+				],
 				start: true
 			};
 		},

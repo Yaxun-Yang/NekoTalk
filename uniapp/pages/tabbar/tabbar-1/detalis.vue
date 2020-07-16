@@ -57,14 +57,14 @@
 			<view class="date">
 				{{details.momentTimeStamp}}
 				<!-- 点赞 -->
-				<span style="padding-left: 270px;padding-bottom: 30px;">
+				<span style="padding-left: 270px;">
 					<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="60"></u-rate>
 				</span>
 			</view>
 		</view>
 		<br>
 		<!-- 评论 -->
-		<u-divider half-width="100%">共222条评论</u-divider>
+		<u-divider half-width="100%">共4条评论</u-divider>
 		<!-- 你的评论 -->
 		<view style="width: 100%;padding-top: 10px;">
 			<u-row justify="start">
@@ -222,7 +222,8 @@
 				
 				uni.navigateTo({
 					
-					url: "/pages/tabbar/tabbar-1/user?phoneNumber=" + this.userPhone
+					url: "/pages/tabbar/tabbar-1/user?phoneNumber=" + e,
+					
 				})
 			},
 			getDetais(id) {

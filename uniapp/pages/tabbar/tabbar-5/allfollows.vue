@@ -37,15 +37,27 @@
 				list: [{
 						name: 'useranme020020',
 						avatar: 'http://qdeujgrtl.bkt.clouddn.com/08.JPG',
-						time: '09-05',
-						follow: false,
+						time: '10-05',
+						follow: true,
 					},
 					{
 						name: 'useranme11111111111111',
 						avatar: 'http://qdeujgrtl.bkt.clouddn.com/02.JPG',
-						time: '09-05',
+						time: '07-05',
 						follow: true,
 					},
+					{
+							name: 'yes',
+							avatar: 'http://qdeujgrtl.bkt.clouddn.com/01.JPG',
+							time: '09-05',
+							follow: true,
+						},
+						{
+							name: 'right',
+							avatar: 'http://qdeujgrtl.bkt.clouddn.com/06.JPG',
+							time: '08-05',
+							follow: true,
+						},
 				]
 
 			}

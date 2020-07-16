@@ -93,13 +93,9 @@
 												</u-col>
 												<u-col span="1">
 													<view class="">
-														<u-rate count="1" value="0"
-														 active-icon="heart-fill" inactive-icon="heart"
-														  size="30"
-														v-model='userlike'
-														></u-rate>
+														<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30" v-model='userlike'></u-rate>
 														<view style="padding-left: 5px;">
-															 {{userlike}}
+
 														</view>
 													</view>
 												</u-col>
@@ -168,136 +164,121 @@
 							<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
 						</scroll-view>
 					</swiper-item>
-					<swiper-item class="swiper-item">
-						<!-- @scrolltolower="reachBottom" -->
+					<swiper-item class="swiper-item2">
 
-						<scroll-view scroll-y style="height: 100%;width: 100%;background-color: #FFFFFF;">
-							<u-waterfall v-model="flowList" ref="uWaterfall">
-								<template v-slot:left="{leftList}">
-									<view class="demo-warter" v-for="(item, index) in leftList" :key="index" @click="details(item)">
-										<!-- 警告：微信小程序不支持嵌入lazyload组件，请自行如下使用image标签 -->
-										<view v-for="(pic, index2) in item.pictureList" :key="index2">
-											<!-- #ifndef MP-WEIXIN -->
-											<u-lazy-load threshold="-450" border-radius="10" :image="pic.url" :index="index"></u-lazy-load>
-											<!-- #endif -->
-											<!-- #ifdef MP-WEIXIN -->
-											<view class="demo-img-wrap">
-												<image class="demo-image" :src="pic.url" mode="widthFix"></image>
-											</view>
-											<!-- #endif -->
+						<view>
+							<u-row>
+								<u-col span="2">
+									<u-avatar :src="user1.avatar" style="width:40px;height: 40px;"></u-avatar>
+								</u-col>
+								<u-col span="2">
+									<u-avatar :src="user2.avatar" style="width:40px;height: 40px;"></u-avatar>
+								</u-col>
+							</u-row>
+						</view>
+						<u-divider half-width="200px"></u-divider>
+						<view>
+							<u-swiper :list="list0" :autoplay="false" img-mode="aspectFit" height="300"  :effect3d="true"></u-swiper>
+						
+							<view class="demo-shop">
+								<u-row>
+									<u-col span="1.5" >
+										<view>
+											<!-- 		getUser(item.phoneNumber).avatar -->
+											<u-avatar :src="user2.avatar" style="width:35px;height: 35px;" @click="details2(idid)"></u-avatar>
 										</view>
-										<view class="demo-title">
-											{{item.text}}( id = {{item.momentId}} )
-											<!-- 	{{ getUser(item.phoneNumber).username }} -->
+									</u-col>
+									
+									<u-col span="9" >
+										<!-- {{getUser(item.phoneNumber).username}} -->
+										<view class="demo-flex">{{name2}}</view>
+									</u-col>
+									
+									<u-col span="1">
+										<view class="">
+											<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30"></u-rate>
 										</view>
-										<view class="demo-tag">
-											<view class="demo-tag-text" v-if="item.phoneNumber==='222'">已关注</view>
-											<view style="background-color: white;width: 5px;"> </view>
-											<view class="demo-tag-owner" v-if="item.originality==='N'">转发</view>
+									</u-col>
+								</u-row>
+							</view>
+						</view>
+						<view>
+							<u-swiper :list="list" :autoplay="false" img-mode="aspectFit" height="300"  :effect3d="true"></u-swiper>
+						
+							<view class="demo-shop">
+								<u-row>
+									<u-col span="1.5" >
+										<view>
+											<!-- 		getUser(item.phoneNumber).avatar -->
+											<u-avatar :src="user1.avatar" style="width:35px;height: 35px;"></u-avatar>
 										</view>
-										<view class="demo-shop">
-											<u-row>
-												<u-col span="2" v-if="item.phoneNumber==='222'">
-													<view>
-														<!-- 		getUser(item.phoneNumber).avatar -->
-														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
-													</view>
-												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
-													<view>
-														<!-- 		getUser(item.phoneNumber).avatar -->
-														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
-													</view>
-												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='222'">
-													<!-- {{getUser(item.phoneNumber).username}} -->
-													<view class="demo-flex">{{name1}}</view>
-												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15243666630'">
-													<!-- {{getUser(item.phoneNumber).username}} -->
-													<view class="demo-flex">{{name2}}</view>
-												</u-col>
-												<u-col span="1">
-													<view >
-														<u-rate count="1" value="0"
-														 active-icon="heart-fill" 
-														 inactive-icon="heart" size="30"
-														 v-model='userlike'
-														 @click="change(item.momentId)"
-														></u-rate>
-														a ? {{userlike}}
-													</view>
-												</u-col>
-
-											</u-row>
+									</u-col>
+									
+									<u-col span="9" >
+										<!-- {{getUser(item.phoneNumber).username}} -->
+										<view class="demo-flex">{{name1}}</view>
+									</u-col>
+									
+									<u-col span="1">
+										<view class="">
+											<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30"></u-rate>
 										</view>
-										<!-- 微信小程序无效，因为它不支持在template中引入组件 -->
-										<!-- <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)"></u-icon> -->
-									</view>
-								</template>
-								<template v-slot:right="{rightList}">
-									<view class="demo-warter" v-for="(item, index) in rightList" :key="index" @click="details(item)">
-										<!-- 警告：微信小程序不支持嵌入lazyload组件，请自行如下使用image标签 -->
-										<view v-for="(pic, index) in item.pictureList" :key="index">
-											<!-- #ifndef MP-WEIXIN -->
-											<u-lazy-load threshold="-450" border-radius="10" :image="pic.url" :index="index"></u-lazy-load>
-											<!-- #endif -->
-											<!-- #ifdef MP-WEIXIN -->
-											<view class="demo-img-wrap">
-												<image class="demo-image" :src="pic.url" mode="widthFix"></image>
-											</view>
-											<!-- #endif -->
+									</u-col>
+								</u-row>
+							</view>
+						</view>
+						<view>
+							<u-swiper :list="list2" :autoplay="false" img-mode="aspectFit" height="300"  :effect3d="true"></u-swiper>
+						
+							<view class="demo-shop">
+								<u-row>
+									<u-col span="1.5" >
+										<view>
+											<!-- 		getUser(item.phoneNumber).avatar -->
+											<u-avatar :src="user2.avatar" style="width:35px;height: 35px;"></u-avatar>
 										</view>
-										<view class="demo-title">
-											{{item.text}}( id = {{item.momentId}} )
-											<!-- 		{{getUser(item.phoneNumber).username}} -->
+									</u-col>
+									
+									<u-col span="9" >
+										<!-- {{getUser(item.phoneNumber).username}} -->
+										<view class="demo-flex">{{name2}}</view>
+									</u-col>
+									
+									<u-col span="1">
+										<view class="">
+											<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30"></u-rate>
 										</view>
-										<view class="demo-tag">
-											<view class="demo-tag-text" v-if="item.phoneNumber==='222'">已关注</view>
-											<view style="background-color: white;width: 5px;"> </view>
-											<view class="demo-tag-owner" v-if="item.originality==='N'">转发</view>
+									</u-col>
+								</u-row>
+							</view>
+						</view>
+						<view>
+							<u-swiper :list="list3" :autoplay="false" img-mode="aspectFit" height="300"  :effect3d="true"></u-swiper>
+						
+							<view class="demo-shop">
+								<u-row>
+									<u-col span="1.5" >
+										<view>
+											<!-- 		getUser(item.phoneNumber).avatar -->
+											<u-avatar :src="user2.avatar" style="width:35px;height: 35px;"></u-avatar>
 										</view>
-										<view class="demo-shop">
-											<u-row>
-												<u-col span="2" v-if="item.phoneNumber==='222'">
-													<view>
-														<!-- 		getUser(item.phoneNumber).avatar -->
-														<u-avatar :src="user1.avatar" style="width:25px;height: 25px;"></u-avatar>
-													</view>
-												</u-col>
-												<u-col span="2" v-if="item.phoneNumber==='15243666630'">
-													<view>
-														<!-- 		getUser(item.phoneNumber).avatar -->
-														<u-avatar :src="user2.avatar" style="width:25px;height: 25px;"></u-avatar>
-													</view>
-												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='222'">
-													<!-- {{getUser(item.phoneNumber).username}} -->
-													<view class="demo-flex">{{name1}}</view>
-												</u-col>
-												<u-col span="9" v-if="item.phoneNumber==='15243666630'">
-													<!-- {{getUser(item.phoneNumber).username}} -->
-													<view class="demo-flex">{{name2}}</view>
-												</u-col>
-												<u-col span="1">
-													<view class="">
-														<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30"></u-rate>
-													</view>
-												</u-col>
-											</u-row>
+									</u-col>
+									
+									<u-col span="9" >
+										<!-- {{getUser(item.phoneNumber).username}} -->
+										<view class="demo-flex">{{name2}}</view>
+									</u-col>
+									
+									<u-col span="1">
+										<view class="">
+											<u-rate count="1" value="0" active-icon="heart-fill" inactive-icon="heart" size="30"></u-rate>
 										</view>
-										<!-- 微信小程序无效，因为它不支持在template中引入组件 -->
-										<!-- <u-icon name="close-circle-fill" color="#fa3534" size="34" class="u-close" @click="remove(item.id)"></u-icon> -->
-									</view>
-								</template>
-							</u-waterfall>
-							<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="addRandomData"></u-loadmore>
-						</scroll-view>
-
-
-
+									</u-col>
+								</u-row>
+							</view>
+						</view>
+						
 					</swiper-item>
-
 				</swiper>
 			</view>
 
@@ -340,8 +321,8 @@
 
 	function touchend(event, ins) {
 		if (code == 0) {
-			// 这里根据自己业务处理,小于30则不作操作
-			if (top < 30) {
+			// 这里根据自己业务处理,小于40则不作操作
+			if (top < 40) {
 				ins.selectComponent('#refresh-container').setStyle({
 					'transform': 'translateY(0)',
 					'transition': 'ease 0.3s'
@@ -404,7 +385,7 @@
 
 <script>
 	export default {
-		
+
 		data() {
 			return {
 				//点击
@@ -425,8 +406,7 @@
 				follow: '',
 				checkphone: '',
 				value: '',
-				headList: [
-					{
+				headList: [{
 						name: '发现'
 					},
 					{
@@ -441,6 +421,51 @@
 				loadStatus: 'loadmore',
 				flowList: [],
 				value1: '',
+				idid: 44,
+				list0:[{
+					image: 'http://qdeujgrtl.bkt.clouddn.com/100.JPG',
+				}],
+				list: [{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/02.JPG',
+
+					},
+					{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/03.JPG',
+
+					},
+					{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/04.JPG',
+
+					},
+				],
+	list2: [{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/05.JPG',
+
+					},
+					{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/06.JPG',
+
+					},
+					{
+						image: 'http://qdeujgrtl.bkt.clouddn.com/07.JPG',
+
+					},
+				],
+				list3: [{
+									image: 'http://qdeujgrtl.bkt.clouddn.com/08.JPG',
+				
+								},
+								{
+									image: 'http://qdeujgrtl.bkt.clouddn.com/06.JPG',
+				
+								},
+								{
+									image: 'http://qdeujgrtl.bkt.clouddn.com/07.JPG',
+				
+								},
+							],
+				url1: 'http://qdeujgrtl.bkt.clouddn.com/09.JPG',
+
 			}
 		},
 		onPageScroll(e) {
@@ -524,6 +549,11 @@
 					url: "/pages/tabbar/tabbar-1/detalis?momentId=" + item.momentId
 				})
 			},
+			details2(idid) {
+				uni.navigateTo({
+					url: "/pages/tabbar/tabbar-1/fresh?momentId=" + idid
+				})
+			},
 			//瀑布流
 			addRandomData() {
 				//详见官网：https://uniapp.dcloud.io/api/request/request
@@ -539,14 +569,14 @@
 				});
 			},
 			//喜欢
-			change(id){
+			change(id) {
 				console.log('ccc')
-					
-				if(this.flag===true){
+
+				if (this.flag === true) {
 					uni.request({
 						url: this.apiServer + '/moment/favour',
 						method: 'POST',
-						data:{
+						data: {
 							'phoneNumber': this.userPhone,
 							'momentId': id,
 						},
@@ -554,12 +584,12 @@
 							'content-type': 'application/json'
 						},
 						success: res => {
-					
-						console.log(res)
+
+							console.log(res)
 						}
 					});
 				}
-				
+
 			},
 		}
 	}
@@ -587,7 +617,7 @@
 		flex-direction: column;
 		height: calc(100vh - var(--window-top));
 		width: 100%;
-			background-color: #FFFFFF;
+		background-color: #FFFFFF;
 		// background-color: #f2f2f2;
 	}
 
@@ -598,6 +628,12 @@
 	.swiper-item {
 		height: 100%;
 	}
+	
+	.swiper-item2 {
+		height: 100%;
+
+	}
+	
 
 	//瀑布流
 	.demo-warter {
