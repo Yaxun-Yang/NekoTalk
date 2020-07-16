@@ -235,10 +235,10 @@ public class MomentAPI {
     }
 
     @GetMapping("/moment")
-    public ResponseTemplate getMomentByMomentId(@RequestParam String momentId)
+    public ResponseTemplate getMomentByMomentId(@RequestParam String momentId, @RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
-        data.put("moment",momentService.getMomentShowByMomentId(momentId));
+        data.put("moment",momentService.getMomentShowByMomentId(momentId,phoneNumber));
         return ResponseTemplate.builder()
                 .status(200)
                 .data(data)
@@ -296,12 +296,12 @@ public class MomentAPI {
     }
 
     @GetMapping("/momentList")
-    public ResponseTemplate getMomentList()
+    public ResponseTemplate getMomentList(@RequestParam String phoneNumber)
     {
         JSONObject data = new JSONObject();
 
 
-        data.put("momentList", momentService.getMomentShowList());
+        data.put("momentList", momentService.getMomentShowList(phoneNumber));
 
         return ResponseTemplate.builder()
                 .status(200)

@@ -36,7 +36,7 @@ public class AccountAPI {
         user.setPassword(MD5Service.getMD5(req.getString("password")));
 
         String key = "avatar"+user.getPhoneNumber();
-        String pictureName = req.getJSONObject("avatar").getJSONObject("response").getString("data");
+        String pictureName = req.getString("avatar");
         String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
         key+=fileType;
         File file = new File(pictureName);
@@ -102,10 +102,10 @@ public class AccountAPI {
         String phoneNumber = req.getString("phoneNumber");
 
         //此处仅为模拟短信发送
-       // String code = "188234";
+        String code = "188234";
 
         //此处为真实的短信发送
-        String code= SmsService.sendSms(phoneNumber);
+      //  String code= SmsService.sendSms(phoneNumber);
         System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
         httpServletRequest.getSession().setAttribute("code",code);
         return ResponseTemplate.builder()
@@ -187,7 +187,7 @@ public class AccountAPI {
         user.setPhoneNumber(req.getString("phoneNumber"));
         user.setUsername(req.getString("username"));
         user.setPassword(req.getString("password"));
-        if(req.get("avatar") == null)
+        if(req.getString("avatar").contains("http://qdeujgrtl.bkt.clouddn.com/"))
         {
             user.setAvatar(req.getString("avatar"));
         }

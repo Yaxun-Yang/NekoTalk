@@ -18,17 +18,17 @@
 				<u-input :border="false" type="select" :select-open="actionSheetShow" v-model="model.powerType" placeholder="选择动态权限"
 				 @click="actionSheetShow = true"></u-input>
 			</u-form-item>
-			<u-form-item label-position="left" label="添加地点" prop="region" label-width="150">
-				<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="选择地点" @click="pickerShow = true"></u-input>
+			<u-form-item label-position="left" label="添加地点" prop="address" label-width="150">
+				<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.address" placeholder="选择地点" @click="pickerShow = true"></u-input>
 			</u-form-item>
-			{{this.model.phoneNumber}}{{this.model.pictureList}}
+			{{this.model.address}}
 		</u-form>
 		<br><br><br><br><br><br><br>
 		<u-button @click="submit" type="error">发送</u-button>
 		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 		<!-- aa -->
 		<u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
-		<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
+		<u-picker mode="address" v-model="pickerShow" @confirm="addressConfirm"></u-picker>
 	</view>
 </template>
 
@@ -46,7 +46,7 @@
 					text: '',
 					phoneNumber: '',
 					powerType: 1,
-					region: '',
+					address: '',
 					pictureList:[],
 					// base 64
 					//picture: '',
@@ -155,11 +155,18 @@
 														'content-type': 'application/json'
 													},
 													success: res => {
+														
+														
+														
+														
 														this.$refs.uTips.show({
 															title: '发送成功',
 															type: 'success',
 															duration: '1300'
 														})
+														uni.switchTab({
+																		url: "/pages/tabbar/tabbar-1/tabbar-1",
+																		})
 													}
 
 												})
@@ -182,8 +189,8 @@
 				this.model.powerType = index + 1;
 			},
 			// 选择地区回调
-			regionConfirm(e) {
-				this.model.region = e.province.label + '-' + e.city.label + '-' + e.area.label;
+			addressConfirm(e) {
+				this.model.address = e.province.label + '-' + e.city.label + '-' + e.area.label;
 			},
 
 

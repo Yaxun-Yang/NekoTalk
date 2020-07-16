@@ -121,9 +121,14 @@ public class MomentService {
         return momentMapper.getMomentByMomentId(momentId);
     }
 
-    public JSONObject getMomentShowByMomentId(String momentId) {
+    public JSONObject getMomentShowByMomentId(String momentId, String phoneNumber) {
         JSONObject data = new JSONObject();
         Moment moment = momentMapper.getMomentByMomentId(momentId);
+        Users users = accountMapper.getUserByPhoneNumber(moment.getPhoneNumber());
+        data.put("username",users.getUsername());
+        data.put("avatar",users.getAvatar());
+        data.put("follow",accountMapper.ifFollowing(new Following(phoneNumber, moment.getPhoneNumber()))!= null?"Y":"N");
+
         data.put("momentId", momentId);
         data.put("phoneNumber", moment.getPhoneNumber());
         data.put("originality", moment.getOriginality());
@@ -160,7 +165,7 @@ public class MomentService {
         List<String> momentIdList = momentMapper.getMomentIdByPhoneNumber(phoneNumber);
         JSONArray data = new JSONArray();
         for (int i = 0; i < momentIdList.size(); i++) {
-            data.add(getMomentShowByMomentId(momentIdList.get(i)));
+            data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
         }
         return data;
     }
@@ -171,7 +176,7 @@ public class MomentService {
         for (int i = 0; i < momentIdList.size(); i++) {
 
             if(powerJudge(momentIdList.get(i),phoneNumber))
-            data.add(getMomentShowByMomentId(momentIdList.get(i)));
+            data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
         }
         return data;
 
@@ -184,7 +189,7 @@ public class MomentService {
         JSONArray data = new JSONArray();
         for (int i = 0; i < momentIdList.size(); i++) {
             if (powerJudge(momentIdList.get(i), phoneNumber))
-                data.add(getMomentShowByMomentId(momentIdList.get(i)));
+                data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
         }
 
             return data;
@@ -197,18 +202,18 @@ public class MomentService {
             for (int i = 0; i < momentIdList.size(); i++) {
 
                 if (powerJudge(momentIdList.get(i), phoneNumber))
-                    data.add(getMomentShowByMomentId(momentIdList.get(i)));
+                    data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
             }
             return data;
         }
 
-    public JSONArray getMomentShowList ()
+    public JSONArray getMomentShowList (String phoneNumber)
     {
             List<String> momentIdList = momentMapper.getMomentIdList();
             JSONArray data = new JSONArray();
             for (int i = 0; i < momentIdList.size(); i++) {
-                Moment moment = momentMapper.getMomentByMomentId(momentIdList.get(i));
-                data.add(getMomentShowByMomentId(moment.getMomentId()));
+                if(powerJudge(momentIdList.get(i),phoneNumber))
+                data.add(getMomentShowByMomentId(momentIdList.get(i),phoneNumber));
             }
             return data;
         }
