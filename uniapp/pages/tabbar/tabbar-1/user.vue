@@ -12,13 +12,11 @@
 		data() {
 			return {
 				userPhone: '',
-	
 			};
 		},
 		onLoad(option) {
 			console.log(option.phoneNumber)
 			this.userPhone = option.phoneNumber;
-		
 		},
 		computed: {
 		

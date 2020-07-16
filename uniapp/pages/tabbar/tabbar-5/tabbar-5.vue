@@ -380,6 +380,7 @@ import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js
 	export default {
 		data() {
 			return {
+						show: false,
 				//form
 				model: {
 					phoneNumber: '',
@@ -620,11 +621,11 @@ import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js
 				errorType: ['message'],
 
 				//
-				allStars: 12,
-				allFollowings: 11,
-				allFans: 15,
+				allStars: 6,
+				allFollowings: 4,
+				allFans: 2,
 				user: {},
-				show: true,
+		
 				// 搜索
 				value: '',
 				headList: [{
@@ -735,7 +736,7 @@ import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js
 			},
 			userPhone() {
 				// return sessionStorage.getItem('phoneNumber');
-				return 15273299601;
+				return 15243666630;
 			},
 		},
 		onReady() {
@@ -750,8 +751,6 @@ import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js
 			}, 1000)
 		},
 		methods: {
-		
-
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
@@ -836,9 +835,6 @@ import { pathToBase64, base64ToPath } from '../../../js_sdk/image-tools/index.js
 				if (index == 2) this.errorType = ['border-bottom'];
 				if (index == 3) this.errorType = ['border'];
 			},
-
-
-
 
 
 			//user

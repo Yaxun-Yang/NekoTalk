@@ -5,7 +5,7 @@
 		<!-- 表 -->
 		<u-form :model="model" :rules="rules" ref="uForm" :errorType="['message']">
 			<u-form-item label-position="left" prop="pictureName" label-width="0">
-				<u-upload width="160" ></u-upload>
+				<u-upload width="160" ref="uUpload" @on-success="onSuccess" :action="action" max-count="9" ></u-upload>
 			
 			</u-form-item>
 			<u-form-item label-position="left" prop="text" label-width="0">
@@ -21,7 +21,7 @@
 			<u-form-item label-position="left" label="添加地点" prop="region" label-width="150">
 				<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="选择地点" @click="pickerShow = true"></u-input>
 			</u-form-item>
-			{{this.model.phoneNumber}}{{this.model.pictureName}}
+			{{this.model.phoneNumber}}
 		</u-form>
 		<br><br><br><br><br><br><br>
 		<u-button @click="submit" type="error">发送</u-button>
@@ -39,9 +39,7 @@
 				actionSheetShow: false,
 				pickerShow: false,
 				//
-				
-
-
+				action: this.apiServer + '/moment/test',
 				//表
 				model: {
 					description: '',
@@ -49,10 +47,11 @@
 					phoneNumber: '',
 					powerType: 1,
 					region: '',
+					pictureList:[],
 					// base 64
-					picture: '',
+					//picture: '',
 					//路径
-					pictureName: '',
+					//pictureName: '',
 
 				},
 				rules: {
@@ -104,7 +103,9 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
-
+			 onSuccess(data, index, list) {
+			                this.model.pictureList.push(data);
+			            },
 
 
 			submit() {
@@ -148,13 +149,16 @@
 													url: this.apiServer + '/moment/momentPicture?momentId=' + id,
 													method: 'POST',
 													data: {
-														picture: this.picture,
-														pictureName: this.pictureName,
+														pictureList: this.model.pictureList,
 													},
 													header: {
 														'content-type': 'application/json'
 													},
 													success: res => {
+														uni.switchTab({
+																url: "/pages/tabbar/tabbar-1/tabbar-1",
+															})
+														
 														this.$refs.uTips.show({
 															title: '发送成功',
 															type: 'success',

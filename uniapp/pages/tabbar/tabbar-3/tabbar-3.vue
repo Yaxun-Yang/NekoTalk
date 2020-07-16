@@ -7,7 +7,7 @@
 					<image class="box-image" src="../../../static/img/release.png" mode="aspectFit"></image>
 					<text class="explain">发图文</text>
 				</view>
-				<view class="tabbar-box-item" @click="goToPage('/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video')">
+				<view class="tabbar-box-item" @click="goToPage2()">
 					<image class="box-image" src="../../../static/img/video.png" mode="aspectFit"></image>
 					<text class="explain">发视频</text>
 				</view>
@@ -53,7 +53,13 @@ export default {
 			uni.navigateTo({
 				url: '/pages/tabbar-3-detial/tabbar-3-release/tabbar-3-release?phoneNumber=' + this.phoneNumber
 			})
-		}
+		},
+		goToPage2(){
+			uni.navigateTo({
+				url: '/pages/tabbar-3-detial/tabbar-3-video/tabbar-3-video?phoneNumber=' + this.phoneNumber
+			})
+		},
+		
 	}
 };
 </script>

@@ -43,8 +43,8 @@
 					star: '4.2',
 					open: '营业中',
 					time: '周一至周日10:00-21:00',
-					phone: '15243766666',
-					address: '江苏省南通市崇川区启秀路19号正西方向83米',
+					phone: '13943766666',
+					address: '距汉安大道公交站步行150米',
 					imageList: [{
 							image: 'http://qdeujgrtl.bkt.clouddn.com/01.JPG'
 						},
