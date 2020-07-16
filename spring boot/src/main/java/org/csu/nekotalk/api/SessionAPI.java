@@ -3,6 +3,7 @@ package org.csu.nekotalk.api;
 
 
 import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONArray;
 import org.csu.nekotalk.domain.*;
 import org.csu.nekotalk.service.PictureService;
 import org.csu.nekotalk.service.SessionService;
@@ -141,6 +142,17 @@ public class SessionAPI {
                 .build();
     }
 
+    @PostMapping("/return")
+    public ResponseTemplate justReturn(@RequestParam JSONObject req)
+    {
+        req .put("time", new Timestamp(System.currentTimeMillis()));
+
+        return ResponseTemplate.builder()
+                .status(200)
+                .statusText("OK")
+                .data(req)
+                .build();
+    }
 
 
 

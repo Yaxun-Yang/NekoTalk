@@ -284,7 +284,8 @@
         SELECT *
         FROM COMMENT
         WHERE momentId = #{momentId}
-        AND  replyCommentId = 0;
+        AND  replyCommentId = 0
+        ORDER BY commentId DESC ;
     </select>
 
     <select id="getReplyCommentList" resultType="Comment">
