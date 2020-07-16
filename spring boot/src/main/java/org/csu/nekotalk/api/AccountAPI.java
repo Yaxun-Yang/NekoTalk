@@ -194,7 +194,7 @@ public class AccountAPI {
         else
         {
             String key = "avatar"+user.getPhoneNumber();
-            String pictureName = req.getJSONObject("avatar").getJSONObject("response").getString("data");
+            String pictureName = req.getString("avatar");
             String fileType = pictureName.substring(pictureName.lastIndexOf(".")).toLowerCase();
             key+=fileType;
             File file = new File(pictureName);

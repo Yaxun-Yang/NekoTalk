@@ -32,8 +32,8 @@ public class SmsService {
         request.setAction("SendSms");
         request.putQueryParameter("RegionId", "cn-hangzhou");
         request.putQueryParameter("PhoneNumbers", phone);
-        request.putQueryParameter("SignName", "MyPetStore");
-        request.putQueryParameter("TemplateCode", "SMS_186968418");
+        request.putQueryParameter("SignName", "NekoTalk");
+        request.putQueryParameter("TemplateCode", "SMS_196651039");
         request.putQueryParameter("TemplateParam", "{\"code\":\""+code+"\"}");
         try {
             CommonResponse response = client.getCommonResponse(request);
