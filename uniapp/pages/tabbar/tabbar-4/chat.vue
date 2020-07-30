@@ -13,7 +13,7 @@
 					</view>
 					<view style="margin-left:10px;">
 						<image src="../../../static/youkeer.png" style="width:40px;height:40px;border-radius:50%;border:1px solid #aaa;" />
-					</view>
+					</view>  
 				</view>
 				<view v-else class="left">
 					<view>

@@ -342,7 +342,7 @@ public class MomentAPI {
     public String test(@RequestParam MultipartFile file )throws Exception
     {
 
-       File temp = new File(new File("/Temp").getAbsolutePath()+"\\"+file.getOriginalFilename());
+       File temp = new File(new File("/home/yyx/temp").getAbsolutePath()+file.getOriginalFilename());
        System.out.println(temp.getAbsolutePath());
        if(!temp.exists())
        {

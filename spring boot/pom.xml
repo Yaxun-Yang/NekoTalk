@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>nekotalk</name>
     <description>cat lovers' dating community</description>
-
+    <packaging>war</packaging>
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -121,9 +121,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+
+
     </dependencies>
 
     <build>
+        <finalName>NekoTalk</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -21,7 +21,7 @@
 			<u-form-item label-position="left" label="添加地点" prop="region" label-width="150">
 				<u-input :border="false" type="select" :select-open="pickerShow" v-model="model.region" placeholder="选择地点" @click="pickerShow = true"></u-input>
 			</u-form-item>
-			{{this.model.phoneNumber}}
+	
 		</u-form>
 		<br><br><br><br><br><br><br>
 		<u-button @click="submit" type="error">发送</u-button>
@@ -137,36 +137,21 @@
 											method: 'POST',
 											data: {
 												momentId: id,
-												description: this.model.description,
+										 		description: this.model.description,
 											},
 											header: {
 												'content-type': 'application/json'
-											},
+											}, 
 											success: res => {
-												console.log('pic')
-												console.log(res)
-												uni.request({
-													url: this.apiServer + '/moment/momentPicture?momentId=' + id,
-													method: 'POST',
-													data: {
-														pictureList: this.model.pictureList,
-													},
-													header: {
-														'content-type': 'application/json'
-													},
-													success: res => {
-														uni.switchTab({
-																url: "/pages/tabbar/tabbar-1/tabbar-1",
-															})
-														
-														this.$refs.uTips.show({
-															title: '发送成功',
-															type: 'success',
-															duration: '1300'
-														})
-													}
-
+											uni.switchTab({
+													url: "/pages/tabbar/tabbar-1/tabbar-1",
 												})
+											
+											this.$refs.uTips.show({ 
+												title: '发送成功',
+												type: 'success',
+												duration: '1300'
+											})
 											}
 										})
 

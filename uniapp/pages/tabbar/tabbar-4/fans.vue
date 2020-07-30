@@ -20,7 +20,7 @@
 							<view class="followTag">已关注</view>
 						</view>
 						<view class="nofollowTag" v-else>
-							<view>回关</view>
+							<view >回关</view>
 						</view>
 					</view>
 				</u-col>

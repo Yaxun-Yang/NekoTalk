@@ -3,7 +3,7 @@
 		<u-top-tips ref="uTips"></u-top-tips>
 		<view class="key-input">
 			<view class="title" @click="openinfo(item)">输入验证码</view>
-			<view class="tips">验证码已发送至 +152****9601</view>
+			<view class="tips">验证码已发送至 +152****6630</view>
 			<u-message-input :focus="true" :value="value" @change="change" @finish="finish" mode="bottomLine" :maxlength="maxlength"
 			 style="width: 330px;"></u-message-input>
 			<text :class="{ error: error }">验证码错误，请重新输入</text>
@@ -25,11 +25,13 @@
 				show: false,
 				error: false,
 				item:'',
+				tel: '',
 			};
 		},
 		computed: {},
-		onLoad() {
+		onLoad(option ) {
 			// this.getCaptcha()
+			this.tel = option.tel
 			let interval = setInterval(() => {
 				this.second--;
 				if (this.second <= 0) {
@@ -60,11 +62,32 @@
 			},
 			//输入完验证码最后一位执行
 			finish(value) {
-				console.log('hi');
-				uni.switchTab({
-					url: "/pages/tabbar/tabbar-1/tabbar-1?item=" + value,
-							
+				uni.request({
+				
+					url: this.apiServer + '/users/token',
+					method: 'POST',
+					data: {
+					phoneNumber: this.tel,
+					verifyCode: value
+					},
+					header: {
+						'content-type': 'application/x-www-form-urlencoded'
+					},
+					success: res => {
+						// this.$refs.uTips.show({
+						// 	title: '发送成功',
+						// 	type: 'success',
+						// 	duration: '1300'
+						// })
+						console.log('hi');
+						uni.switchTab({
+							url: "/pages/tabbar/tabbar-1/tabbar-1?item=" + value,
+									
+						});
+					}
 				});
+				  
+				
 			},
 			openinfo(item) {
 				console.log('hi');

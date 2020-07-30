@@ -53,13 +53,8 @@
 			}
 		},
 		methods: {
-			to(tel){
-				uni.switchTab({
-					url: "/pages/tabbar/tabbar-1/tabbar-1?item=" + tel,
-							
-				});
-			},
-			submit() {
+
+			submit(tel) {
 				if (this.$u.test.mobile(this.tel)) {
 					
 					uni.request({
@@ -73,7 +68,7 @@
 						},
 						success: res => {
 							this.$u.route({
-								url: 'pages/tabbar/tabbar-1/code'
+								url: 'pages/tabbar/tabbar-1/code?tel=' + tel 
 							});
 						}
 					});

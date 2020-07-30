@@ -16,8 +16,8 @@ import java.util.Base64;
 public class PictureService {
 
     //密钥
-    static String accessKey = "-QO-oZhwFam-uTKvzb3Ge7Lstga7NBsJT-fGvWrr";
-    static String secretKey = "9oWv-J2tJRtx7vtkB0VmkcXFaFHKW0-3U7-kvyum";
+    static String accessKey = "";
+    static String secretKey = "";
     static Auth auth = Auth.create(accessKey, secretKey);
     //存储空间名
     static String bucketName = "nekotalk";

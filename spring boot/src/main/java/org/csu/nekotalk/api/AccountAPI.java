@@ -102,10 +102,10 @@ public class AccountAPI {
         String phoneNumber = req.getString("phoneNumber");
 
         //此处仅为模拟短信发送
-        String code = "188234";
+       // String code = "188234";
 
         //此处为真实的短信发送
-      //  String code= SmsService.sendSms(phoneNumber);
+        String code= SmsService.sendSms(phoneNumber);
         System.out.println("成功发送短信给"+phoneNumber+"，验证码为"+code);
         httpServletRequest.getSession().setAttribute("code",code);
         return ResponseTemplate.builder()
